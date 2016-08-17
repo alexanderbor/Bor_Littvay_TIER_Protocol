@@ -1,0 +1,1188 @@
+# Get the necessary libraries#
+library(car)#
+library(gdata)#
+library(foreign)#
+#Load original file from http://www.europeansocialsurvey.org/download.html?file=ESS5RU&c=RU&y=2010&loggedin #
+#data has 673 variables. #
+setwd("/Users/szasulja/Dropbox/thesis/final_data")#
+data_all<-read.spss('ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+#votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru","prtclbru"),info=FALSE )
+install.packages("gdata")
+# Get the necessary libraries#
+library(car)#
+library(gdata)#
+library(foreign)#
+#Load original file from http://www.europeansocialsurvey.org/download.html?file=ESS5RU&c=RU&y=2010&loggedin #
+#data has 673 variables. #
+setwd("/Users/szasulja/Dropbox/thesis/final_data")#
+data_all<-read.spss('ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+#votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru","prtclbru"),info=FALSE )
+names(data)
+data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)
+names(data_mplus)
+write.table(naems(data_mplus), "/Users/szasulja/Dropbox/thesis/final_data/datamplus.var")
+write.table(names(data_mplus), "/Users/szasulja/Dropbox/thesis/final_data/datamplus.var")
+write(names(data_mplus), "/Users/szasulja/Dropbox/thesis/final_data/datamplus.var")
+?write
+cat(names(data_mplus), "/Users/szasulja/Dropbox/thesis/final_data/datamplus.var")
+cat(names(data_mplus), file = "/Users/szasulja/Dropbox/thesis/final_data/datamplus.var")
+write.table(data_mplus[-1, ], "/Users/szasulja/Dropbox/thesis/final_data/datamplus_test.txt", sep="\t", na="99")
+?write.table
+write.table(data_mplus, "/Users/szasulja/Dropbox/thesis/final_data/datamplus_test.txt", #
+		sep="\t", na="99", col.names = FALSE)
+head(data_mplus)
+str(data_mplus)
+?as.atomic
+write.table(cbind(1:length(data_mplus), data_mplus), #
+		"/Users/szasulja/Dropbox/thesis/final_data/datamplus_test.txt", #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)
+write.table(cbind(1:nrow(data_mplus), data_mplus), #
+		"/Users/szasulja/Dropbox/thesis/final_data/datamplus_test.txt", #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)
+##  this just clears the memory to avoid confusion with things already in memory #
+rm(list=ls()) #
+#
+# Load library to read .sav format #
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command Files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command Files' DIRECTORY>" with the directory path #
+####   (for the computer you are working on) to the "Command Files" directory.#
+#
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files#
+")#
+#
+# Read the data  #
+#
+data_all<-read.spss('../Importable Data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+#
+###  Save imported Pew data in a file called "ESS5RU.Rdata"#
+save(data_all, file = paste("ESS5RU.Rdata", sep = ""))
+data_all<-read.spss('../Importable Data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis")
+data_all<-read.spss('../Importable Data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )
+getwd()
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files")
+data_all<-read.spss('../importable-data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )
+data_all<-read.spss('../importable-data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )
+save(data_all, file = paste("ESS5RU.Rdata", sep = ""))
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files
+")
+getwd()
+load("ESS5RU.Rdata")
+rm(list = ls())
+getwd()
+load("ESS5RU.Rdata")
+load("ESS5RU.Rdata")#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+# votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, #
+# NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru",#
+	"prtclbru"),info=FALSE )
+AnalysisData <- "../analysis-data"
+save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))
+save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))
+data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)#
+# export a data set for the analysis in MPLUS #
+# this creates file with variable names. #
+cat(names(data_mplus), file = paste(AnalysisData, "/datamplus.var", sep = ""))#
+# this creates file with the data itself#
+# strange solution with cbinding is to avoid "" around rownames. #
+write.table(cbind(1:nrow(data_mplus), data_mplus), #
+		file = paste(AnalysisData, "/datamplus.dat", sep = ""), #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)#
+# After running M-Plus code, load exported data set and process it into Analysis Data folder. #
+# The data from M-Plus is already saved in the folder to ensure reproducability even without #
+# an M-Plus licence. #
+data_out <- read.table("../analysis-data/ess5ru_from_mplus.txt", quote="\"")#
+save(data_out, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+#Remove ESS5RU.Rdata from the "Command Files" folder#
+file.remove("ESS5RU.Rdata")
+str(data_out)
+library(ggplot2)#
+library(stargazer)#
+std <- function(x) sd(x)/sqrt(length(x))#
+#
+set.seed(13012)#
+#
+setwd("/Users/szasulja/Dropbox/thesis/final_data")#
+# setwd("C:/Users/Bor/Dropbox/thesis/final_data")#
+#
+data_out <- read.table("newoutpartyur2.txt", quote="\"")#
+#
+#update column names from M PLUS code #
+colnames(data_out)<-c("TRSTPRL", "TRSTLGL", "TRSTPLC", "TRSTPLT", "TRSTPRT", #
+                      "PARTYUR", "STFECON", "AGEA", "EDUSECON", "EDUPRIMA", #
+                      "MALE", "WORKORG", "TRSTPPL", "POLINTR", "INTERNET", #
+                      "VOTED", "TOWN", "VILG", "ID", "TR", "C_TR", "CPROB1", #
+                      "CPROB2", "C")
+str(data_out)
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files")
+# Get the necessary libraries#
+library(car)#
+library(gdata)#
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command files' DIRECTORY>" with the directory path (for the computer you are#
+####   working on) to the "Command files" directory.#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+###  load ESS5RU#
+load("ESS5RU.Rdata")#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+# votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, #
+# NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru",#
+	"prtclbru"),info=FALSE )#
+###  Save the processed ESS Russia data#
+###  in a file called "ESS5RU_clean.Rdata"#
+###  stored in the "analysis-data" folder#
+AnalysisData <- "../analysis-data"#
+save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)#
+# export a data set for the analysis in MPLUS #
+# this creates file with variable names. #
+cat(names(data_mplus), file = paste(AnalysisData, "/datamplus.var", sep = ""))#
+# this creates file with the data itself#
+# strange solution with cbinding is to avoid "" around rownames. #
+write.table(cbind(1:nrow(data_mplus), data_mplus), #
+		file = paste(AnalysisData, "/datamplus.dat", sep = ""), #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)#
+# After running M-Plus code, load exported data set and process it into Analysis Data folder. #
+# The data from M-Plus is already saved in the folder to ensure reproducability even without #
+# an M-Plus licence. #
+data_out <- read.table("../analysis-data/ess5ru_from_mplus.txt", quote="\"")#
+save(data_out, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+#Remove ESS5RU.Rdata from the "Command Files" folder#
+file.remove("ESS5RU.Rdata")
+source("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files/ess5ru_importing.R")
+source("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files/ess5ru_importing.R")
+source("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files/ess5ru_importing.R")
+data_all<-read.spss('../importable-data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+#
+###  Save imported Pew data in a file called "ESS5RU.Rdata"#
+save(data_all, file = paste("ESS5RU.Rdata", sep = ""))
+# Get the necessary libraries#
+library(car)#
+library(gdata)#
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command files' DIRECTORY>" with the directory path (for the computer you are#
+####   working on) to the "Command files" directory.#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+###  load ESS5RU#
+load("ESS5RU.Rdata")#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+# votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, #
+# NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru",#
+	"prtclbru"),info=FALSE )#
+###  Save the processed ESS Russia data#
+###  in a file called "ESS5RU_clean.Rdata"#
+###  stored in the "analysis-data" folder#
+AnalysisData <- "../analysis-data"#
+save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)#
+# export a data set for the analysis in MPLUS #
+# this creates file with variable names. #
+cat(names(data_mplus), file = paste(AnalysisData, "/datamplus.var", sep = ""))#
+# this creates file with the data itself#
+# strange solution with cbinding is to avoid "" around rownames. #
+write.table(cbind(1:nrow(data_mplus), data_mplus), #
+		file = paste(AnalysisData, "/datamplus.dat", sep = ""), #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)#
+# After running M-Plus code, load exported data set and process it into Analysis Data folder. #
+# The data from M-Plus is already saved in the folder to ensure reproducability even without #
+# an M-Plus licence. #
+data_out <- read.table("../analysis-data/ess5ru_from_mplus.txt", quote="\"")#
+save(data_out, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+#Remove ESS5RU.Rdata from the "Command Files" folder#
+file.remove("ESS5RU.Rdata")
+library(ggplot2)#
+library(stargazer)#
+std <- function(x) sd(x)/sqrt(length(x))#
+#
+set.seed(13012)#
+#
+setwd("/Users/szasulja/Dropbox/thesis/final_data")#
+# setwd("C:/Users/Bor/Dropbox/thesis/final_data")#
+#
+data_out <- read.table("newoutpartyur2.txt", quote="\"")#
+#
+#update column names from M PLUS code #
+colnames(data_out)<-c("TRSTPRL", "TRSTLGL", "TRSTPLC", "TRSTPLT", "TRSTPRT", #
+                      "PARTYUR", "STFECON", "AGEA", "EDUSECON", "EDUPRIMA", #
+                      "MALE", "WORKORG", "TRSTPPL", "POLINTR", "INTERNET", #
+                      "VOTED", "TOWN", "VILG", "ID", "TR", "C_TR", "CPROB1", #
+                      "CPROB2", "C")#
+#
+# rescale trust index to original 0 - 10 scale#
+data_out$TR <- (data_out$TR - min(data_out$TR)) / (-min(data_out$TR) + max(data_out$TR)) * 10#
+#
+summary(data_out$TRSTPRL)
+# create variable with generations#
+data_out$AGEGEN<-recode(data_out$AGEA, "0:25='1'; 26:34='2'; 35:40='3'; 41:60='4'; 61:71='5'; 72:hi='6'; else='NA'")#
+data_out$AGEGEN <- factor(data_out$AGEGEN, #
+                          labels = c("Putin's (18-25)", "Yeltsin's (25-34)",#
+                                     "Gorbachev's (35-40)", "Brezhnev's (41-60)",#
+                                     "Khruschev's (61-71)", "Stalin's (72- )"))#
+#
+# calculate mean and standard error for each group #
+a<-tapply(data_out$TR, data_out$AGEGEN, mean)#
+b<-tapply(data_out$TR, data_out$AGEGEN, std)*2#
+ab <- factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN))#
+#
+# create table with results#
+resultA<-data.frame(mean_age = a, se = b, #
+                    gen = factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN)))#
+#
+# EDUCATION #
+#
+data_out$EDUCAT<-ifelse(data_out$EDUPRIMA==1, data_out$EDUCAT<-3, #
+                        ifelse(data_out$EDUSECON==1, data_out$EDUCAT<-2,#
+                               data_out$EDUCAT<-1))#
+data_out$EDUCAT <- factor(data_out$EDUCAT, #
+                          labels = c("Higher edu.", "Secondary edu.",#
+                                     "Primary edu."))#
+#
+# calculate mean and standard error for each group #
+c<-tapply(data_out$TR, data_out$EDUCAT, mean)#
+d<-tapply(data_out$TR, data_out$EDUCAT, std)*2#
+cd <- factor(levels(data_out$EDUCAT), levels = levels(data_out$EDUCAT))#
+resultB<-data.frame(mean_edu = c, se = d,#
+                    edu = factor(levels(data_out$EDUCAT), #
+                                 levels = levels(data_out$EDUCAT)))#
+#
+# POPULATION SIZE#
+#
+# create single factor from the two dummies (and reference group)#
+data_out$POPSIZE <-ifelse(data_out$VILG==1, 3, #
+                          ifelse(data_out$TOWN==1, 2, #
+                                 1))#
+#
+data_out$POPSIZE <- factor(data_out$POPSIZE, labels = c("City", "Town", "Village"))#
+#
+# calculate mean and standard error for each group #
+e<-tapply(data_out$TR, data_out$POPSIZE, mean)#
+f<-tapply(data_out$TR, data_out$POPSIZE, std)*2#
+resultC<-data.frame(mean_popsize = e, #
+                    se = f, #
+                    popsize = factor(levels(data_out$POPSIZE), #
+                                 levels = levels(data_out$POPSIZE))#
+                    )#
+#
+# PROTESTER#
+#
+data_out$PROTEST <- ifelse(data_out$AGEA < 35 & #
+                                   data_out$EDUCAT == "Higher edu." & #
+                                   data_out$POPSIZE == "City", 1, #
+                           0)#
+data_out$PROTEST <- 0 #
+data_out$PROTEST[data_out$AGEGEN == "Putin's (18-25)" & #
+                         data_out$EDUCAT == "Higher edu." & #
+                         data_out$POPSIZE == "City"] <- 1#
+#
+data_out$PROTEST <- factor(data_out$PROTEST, #
+                           labels = c("Non-protester", "Protester"))#
+#
+data_out$PROTEST <- relevel(data_out$PROTEST, ref = 2)#
+#
+# calculate mean and standard error for each group #
+g <- tapply(data_out$TR, data_out$PROTEST, mean)#
+h <- tapply(data_out$TR, data_out$PROTEST, std)#
+#
+resultD <- data.frame(mean_protest = g, #
+                      se = h, #
+                      protest = factor(levels(data_out$PROTEST),#
+                                        levels = levels(data_out$PROTEST))#
+                      )#
+#
+# combine all 4 variables into one data frame#
+resultAll <- data.frame(#
+        mean = c(a, c, e, g), #
+        se = c(b, d, f, h),#
+        group = factor(c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                         levels(data_out$POPSIZE), levels(data_out$PROTEST)), #
+                       levels = c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                                  levels(data_out$POPSIZE), levels(data_out$PROTEST))#
+                       ),#
+        Variables = factor(c(rep("Generation", 6), rep("Education", 3), #
+                            rep("Pop.size", 3), rep("Protest", 2)),#
+                          levels = c("Protest", "Pop.size", "Education",#
+                                     "Generation"))#
+                        )#
+#
+# Figure 1. Stratified means of trust. #
+#
+f1 <- ggplot(resultAll, aes(x = group, y = mean, fill = Variables)) + #
+        geom_bar(stat = "identity", color = "black", width = 0.8) + #
+        geom_errorbar(aes(ymin = resultAll$mean - resultAll$se, #
+                          ymax = resultAll$mean + resultAll$se), width = 0.3) + #
+        # geom_hline(yintercept = mean(data_out$TR, na.rm = T)) +#
+        geom_vline(xintercept = c(6.5, 9.5, 12.5), size = 1) +#
+        coord_flip() + #
+        scale_fill_grey() +#
+        theme_bw() + #
+        theme(legend.position = c(.9, .15)) +#
+        xlab("") + #
+        # ylim(c(0, 3)) +#
+        ylab("Mean Trust index")#
+f1#
+# ggsave("Figure1.pdf")
+# create variable with generations#
+data_out$AGEGEN<-recode(data_out$AGEA, "0:25='1'; 26:34='2'; 35:40='3'; 41:60='4'; 61:71='5'; 72:hi='6'; else='NA'")#
+data_out$AGEGEN <- factor(data_out$AGEGEN, #
+                          labels = c("Putin's (18-25)", "Yeltsin's (25-34)",#
+                                     "Gorbachev's (35-40)", "Brezhnev's (41-60)",#
+                                     "Khruschev's (61-71)", "Stalin's (72- )"))#
+#
+# calculate mean and standard error for each group #
+a<-tapply(data_out$TR, data_out$AGEGEN, mean)#
+b<-tapply(data_out$TR, data_out$AGEGEN, std)*2#
+ab <- factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN))#
+#
+# create table with results#
+resultA<-data.frame(mean_age = a, se = b, #
+                    gen = factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN)))#
+#
+# EDUCATION #
+#
+data_out$EDUCAT<-ifelse(data_out$EDUPRIMA==1, data_out$EDUCAT<-3, #
+                        ifelse(data_out$EDUSECON==1, data_out$EDUCAT<-2,#
+                               data_out$EDUCAT<-1))#
+data_out$EDUCAT <- factor(data_out$EDUCAT, #
+                          labels = c("Higher edu.", "Secondary edu.",#
+                                     "Primary edu."))#
+#
+# calculate mean and standard error for each group #
+c<-tapply(data_out$TR, data_out$EDUCAT, mean)#
+d<-tapply(data_out$TR, data_out$EDUCAT, std)*2#
+cd <- factor(levels(data_out$EDUCAT), levels = levels(data_out$EDUCAT))#
+resultB<-data.frame(mean_edu = c, se = d,#
+                    edu = factor(levels(data_out$EDUCAT), #
+                                 levels = levels(data_out$EDUCAT)))#
+#
+# POPULATION SIZE#
+#
+# create single factor from the two dummies (and reference group)#
+data_out$POPSIZE <-ifelse(data_out$VILG==1, 3, #
+                          ifelse(data_out$TOWN==1, 2, #
+                                 1))#
+#
+data_out$POPSIZE <- factor(data_out$POPSIZE, labels = c("City", "Town", "Village"))#
+#
+# calculate mean and standard error for each group #
+e<-tapply(data_out$TR, data_out$POPSIZE, mean)#
+f<-tapply(data_out$TR, data_out$POPSIZE, std)*2#
+resultC<-data.frame(mean_popsize = e, #
+                    se = f, #
+                    popsize = factor(levels(data_out$POPSIZE), #
+                                 levels = levels(data_out$POPSIZE))#
+                    )#
+#
+# PROTESTER#
+#
+data_out$PROTEST <- ifelse(data_out$AGEA < 35 & #
+                                   data_out$EDUCAT == "Higher edu." & #
+                                   data_out$POPSIZE == "City", 1, #
+                           0)#
+data_out$PROTEST <- 0 #
+data_out$PROTEST[data_out$AGEGEN == "Putin's (18-25)" & #
+                         data_out$EDUCAT == "Higher edu." & #
+                         data_out$POPSIZE == "City"] <- 1#
+#
+data_out$PROTEST <- factor(data_out$PROTEST, #
+                           labels = c("Non-protester", "Protester"))#
+#
+data_out$PROTEST <- relevel(data_out$PROTEST, ref = 2)#
+#
+# calculate mean and standard error for each group #
+g <- tapply(data_out$TR, data_out$PROTEST, mean)#
+h <- tapply(data_out$TR, data_out$PROTEST, std)#
+#
+resultD <- data.frame(mean_protest = g, #
+                      se = h, #
+                      protest = factor(levels(data_out$PROTEST),#
+                                        levels = levels(data_out$PROTEST))#
+                      )#
+#
+# combine all 4 variables into one data frame#
+resultAll <- data.frame(#
+        mean = c(a, c, e, g), #
+        se = c(b, d, f, h),#
+        group = factor(c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                         levels(data_out$POPSIZE), levels(data_out$PROTEST)), #
+                       levels = c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                                  levels(data_out$POPSIZE), levels(data_out$PROTEST))#
+                       ),#
+        Variables = factor(c(rep("Generation", 6), rep("Education", 3), #
+                            rep("Pop.size", 3), rep("Protest", 2)),#
+                          levels = c("Protest", "Pop.size", "Education",#
+                                     "Generation"))#
+                        )#
+#
+# Figure 1. Stratified means of trust. #
+#
+f1 <- ggplot(resultAll, aes(x = group, y = mean, fill = Variables)) + #
+        geom_bar(stat = "identity", color = "black", width = 0.8) + #
+        geom_errorbar(aes(ymin = resultAll$mean - resultAll$se, #
+                          ymax = resultAll$mean + resultAll$se), width = 0.3) + #
+        # geom_hline(yintercept = mean(data_out$TR, na.rm = T)) +#
+        geom_vline(xintercept = c(6.5, 9.5, 12.5), size = 1) +#
+        coord_flip() + #
+        scale_fill_grey() +#
+        theme_bw() + #
+        theme(legend.position = c(.9, .15)) +#
+        xlab("") + #
+        # ylim(c(0, 3)) +#
+        ylab("Mean Trust index")#
+f1#
+# ggsave("Figure1.pdf")
+n)
+tapply(data_out$TR, data_out$C, mean)
+?read.table
+data_out <- read.table("newoutpartyur2.txt", quote="\"", na.strings = "*")#
+#
+#update column names from M PLUS code #
+colnames(data_out)<-c("TRSTPRL", "TRSTLGL", "TRSTPLC", "TRSTPLT", "TRSTPRT", #
+                      "PARTYUR", "STFECON", "AGEA", "EDUSECON", "EDUPRIMA", #
+                      "MALE", "WORKORG", "TRSTPPL", "POLINTR", "INTERNET", #
+                      "VOTED", "TOWN", "VILG", "ID", "TR", "C_TR", "CPROB1", #
+                      "CPROB2", "C")#
+#
+# rescale trust index to original 0 - 10 scale#
+data_out$TR <- (data_out$TR - min(data_out$TR)) / (-min(data_out$TR) + max(data_out$TR)) * 10#
+#
+summary(data_out$TRSTPRL)#
+#
+################################################
+# Descriptive statistics - Preliminary analysis #
+################################################
+#
+# GENERATIONS #
+#
+# create variable with generations#
+data_out$AGEGEN<-recode(data_out$AGEA, "0:25='1'; 26:34='2'; 35:40='3'; 41:60='4'; 61:71='5'; 72:hi='6'; else='NA'")#
+data_out$AGEGEN <- factor(data_out$AGEGEN, #
+                          labels = c("Putin's (18-25)", "Yeltsin's (25-34)",#
+                                     "Gorbachev's (35-40)", "Brezhnev's (41-60)",#
+                                     "Khruschev's (61-71)", "Stalin's (72- )"))#
+#
+# calculate mean and standard error for each group #
+a<-tapply(data_out$TR, data_out$AGEGEN, mean)#
+b<-tapply(data_out$TR, data_out$AGEGEN, std)*2#
+ab <- factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN))#
+#
+# create table with results#
+resultA<-data.frame(mean_age = a, se = b, #
+                    gen = factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN)))#
+#
+# EDUCATION #
+#
+data_out$EDUCAT<-ifelse(data_out$EDUPRIMA==1, data_out$EDUCAT<-3, #
+                        ifelse(data_out$EDUSECON==1, data_out$EDUCAT<-2,#
+                               data_out$EDUCAT<-1))#
+data_out$EDUCAT <- factor(data_out$EDUCAT, #
+                          labels = c("Higher edu.", "Secondary edu.",#
+                                     "Primary edu."))#
+#
+# calculate mean and standard error for each group #
+c<-tapply(data_out$TR, data_out$EDUCAT, mean)#
+d<-tapply(data_out$TR, data_out$EDUCAT, std)*2#
+cd <- factor(levels(data_out$EDUCAT), levels = levels(data_out$EDUCAT))#
+resultB<-data.frame(mean_edu = c, se = d,#
+                    edu = factor(levels(data_out$EDUCAT), #
+                                 levels = levels(data_out$EDUCAT)))#
+#
+# POPULATION SIZE#
+#
+# create single factor from the two dummies (and reference group)#
+data_out$POPSIZE <-ifelse(data_out$VILG==1, 3, #
+                          ifelse(data_out$TOWN==1, 2, #
+                                 1))#
+#
+data_out$POPSIZE <- factor(data_out$POPSIZE, labels = c("City", "Town", "Village"))#
+#
+# calculate mean and standard error for each group #
+e<-tapply(data_out$TR, data_out$POPSIZE, mean)#
+f<-tapply(data_out$TR, data_out$POPSIZE, std)*2#
+resultC<-data.frame(mean_popsize = e, #
+                    se = f, #
+                    popsize = factor(levels(data_out$POPSIZE), #
+                                 levels = levels(data_out$POPSIZE))#
+                    )#
+#
+# PROTESTER#
+#
+data_out$PROTEST <- ifelse(data_out$AGEA < 35 & #
+                                   data_out$EDUCAT == "Higher edu." & #
+                                   data_out$POPSIZE == "City", 1, #
+                           0)#
+data_out$PROTEST <- 0 #
+data_out$PROTEST[data_out$AGEGEN == "Putin's (18-25)" & #
+                         data_out$EDUCAT == "Higher edu." & #
+                         data_out$POPSIZE == "City"] <- 1#
+#
+data_out$PROTEST <- factor(data_out$PROTEST, #
+                           labels = c("Non-protester", "Protester"))#
+#
+data_out$PROTEST <- relevel(data_out$PROTEST, ref = 2)#
+#
+# calculate mean and standard error for each group #
+g <- tapply(data_out$TR, data_out$PROTEST, mean)#
+h <- tapply(data_out$TR, data_out$PROTEST, std)#
+#
+resultD <- data.frame(mean_protest = g, #
+                      se = h, #
+                      protest = factor(levels(data_out$PROTEST),#
+                                        levels = levels(data_out$PROTEST))#
+                      )#
+#
+# combine all 4 variables into one data frame#
+resultAll <- data.frame(#
+        mean = c(a, c, e, g), #
+        se = c(b, d, f, h),#
+        group = factor(c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                         levels(data_out$POPSIZE), levels(data_out$PROTEST)), #
+                       levels = c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                                  levels(data_out$POPSIZE), levels(data_out$PROTEST))#
+                       ),#
+        Variables = factor(c(rep("Generation", 6), rep("Education", 3), #
+                            rep("Pop.size", 3), rep("Protest", 2)),#
+                          levels = c("Protest", "Pop.size", "Education",#
+                                     "Generation"))#
+                        )#
+#
+# Figure 1. Stratified means of trust. #
+#
+f1 <- ggplot(resultAll, aes(x = group, y = mean, fill = Variables)) + #
+        geom_bar(stat = "identity", color = "black", width = 0.8) + #
+        geom_errorbar(aes(ymin = resultAll$mean - resultAll$se, #
+                          ymax = resultAll$mean + resultAll$se), width = 0.3) + #
+        # geom_hline(yintercept = mean(data_out$TR, na.rm = T)) +#
+        geom_vline(xintercept = c(6.5, 9.5, 12.5), size = 1) +#
+        coord_flip() + #
+        scale_fill_grey() +#
+        theme_bw() + #
+        theme(legend.position = c(.9, .15)) +#
+        xlab("") + #
+        # ylim(c(0, 3)) +#
+        ylab("Mean Trust index")#
+f1#
+# ggsave("Figure1.pdf")#
+#
+#Stratified means for the mixture model's latent classes #
+tapply(data_out$TR, data_out$C, mean)#
+#
+#Welch Two Sample t-test on latent classes' mean trust#
+t.test(data_out$TR~data_out$C)#
+#
+# size of latent classes#
+table(data_out$C) # number#
+prop.table(table(data_out$C)) #proportion
+model.1a <- lm(formula=TR ~ STFECON + AGEA + EDUSECON + EDUPRIMA + TOWN + VILG,#
+               data=data_out,na.action=na.omit)#
+summary(model.1a)#
+#
+#TABLE 1/B. Lin reg. on trust index WITH INTERACTIONS#
+model.1b <- lm(formula=TR ~ STFECON*(AGEA + EDUSECON + EDUPRIMA + TOWN + VILG),#
+               data=data_out,na.action=na.omit)#
+summary(model.1b)#
+#
+#TABLE 1/C. Lin reg. on trust index WITH PROTEST-DUMMY INTERACTION#
+model.1c <- lm(formula=TR ~ STFECON*PROTEST, data=data_out,na.action=na.omit)#
+summary(model.1c)#
+#
+# Combine 3 models into a single table. #
+stargazer(model.1a, model.1b, model.1c, #
+          type = "text",#
+          # out = "model.tex",#
+          column.labels = c("Model 1", "Model 2", "Model 3"),#
+          header = F,#
+          single.row = T,#
+          align = T,#
+          title = "OLS Regression of Trust index on main socio-economic variables",#
+          dep.var.labels.include = F,#
+          dep.var.caption = "",#
+          covariate.labels = c("Satisfaction with economy", "Age", "Secondary education",#
+                               "Primary education", "Town", "Village", #
+                               "Satisfaction with economy x Age", #
+                               "Satisfaction with economy x Secondary ed.",#
+                               "Satisfaction with economy x Primary ed.", #
+                               "Satisfaction with economy x Town", #
+                               "Satisfaction with economy x Village", #
+                               "Non-protest group", #
+                               "Satisfaction with economy x Non-protest g.", #
+                               "Intercept"),#
+          omit.stat = c("rsq", "ser", "f"))
+##  this just clears the memory to avoid confusion with things already in memory #
+rm(list=ls()) #
+#
+# Load library to read .sav format #
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command Files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command Files' DIRECTORY>" with the directory path #
+####   (for the computer you are working on) to the "Command Files" directory.#
+#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+#
+# Read the data  #
+#
+data_all<-read.spss('../importable-data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+#
+###  Save imported Pew data in a file called "ESS5RU.Rdata"#
+save(data_all, file = paste("ESS5RU.Rdata", sep = ""))
+setwd(“/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files”)
+setwd(“/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files”)
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files")
+##  this just clears the memory to avoid confusion with things already in memory #
+rm(list=ls()) #
+#
+# Load library to read .sav format #
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command Files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command Files' DIRECTORY>" with the directory path #
+####   (for the computer you are working on) to the "Command Files" directory.#
+#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+#
+# Read the data  #
+#
+data_all<-read.spss('../importable-data/ESS5RU.sav', use.value.labels = FALSE, to.data.frame= TRUE )#
+#
+###  Save imported Pew data in a file called "ESS5RU.Rdata"#
+save(data_all, file = paste("ESS5RU.Rdata", sep = ""))
+# Get the necessary libraries#
+library(car)#
+library(gdata)#
+library(foreign)#
+####   Set working directory#
+####   The working directory should be set to the "Command files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command files' DIRECTORY>" with the directory path (for the computer you are#
+####   working on) to the "Command files" directory.#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+###  load ESS5RU#
+load("ESS5RU.Rdata")#
+# Get rid of the useless vaqriables#
+data<-data.frame(data_all[, c( "idno", "stfeco", "trstprl", "trstlgl", "trstplc", "trstplt", #
+                               "trstprt", "ppltrst", "agea", "eisced", "gndr", "wrkorg", #
+                               "netuse", "polintr", "vote", "prtvtbru","prtclbru", "domicil" )])#
+attach(data)#
+# RECODING VARIABLES. #
+# id - id number#
+data<-rename.vars(data, "idno", "id", info=FALSE)#
+#stfecon Satisfaction with economy : 0 low - 10 high #
+data<-rename.vars(data, "stfeco", "stfecon", info=FALSE)#
+#trstprl Trust in Parliament : 0 low - 10 high #
+#trstlgl Trust in Legal System : 0 low - 10 high #
+#trstplc Trust in Police : 0 low - 10 high #
+#trstplt Trust in Politicians : 0 low - 10 high #
+#trstprt Trust in Parties : 0 low - 10 high #
+#trstppl Trust in other people : 0 low - 10 high #
+data<-rename.vars(data, "ppltrst", "trstppl", info=FALSE)#
+#agecat Age - categorical #
+data$agecat<-recode(agea,"0:25=1; 26:34=2; 35:40=3; 41:60=4; 61:71=5; 72:hi=6; else=NA")#
+#educat Education - categorical : 1 university - 2 secondary - 3 primary school#
+data$educat<-recode(eisced, "1:2='3'; 4='2'; 5:7='1'; else='NA'") #
+#edusecon Education: secondary - dummy#
+data$edusecon<-recode(data$educat, "1='0'; 2='1'; 3='0'")#
+#eduprima Education: primary - dummy#
+data$eduprima<-recode(data$educat, "1:2='0'; 3='1'")#
+#male Male - dummy#
+data$male<-recode(data$gndr, "2='0'")#
+#workorg Working for social organisations in the last 12 months - dummy#
+data$workorg<-recode(data$wrkorg, "2='0'")#
+#internet Frequent internet-user - several times a week or daily - dummy#
+data$internet<-recode(data$netuse, "0:5='0'; 6:7='1'")#
+#polintr Interest in politics - dummy#
+data$polintr<-recode(data$polintr, "1:2='1'; 3:4='0'")#
+#voted Voted in last elections - dummy#
+data$voted<-recode(data$vote, "2=0; 3=NA")#
+# votedur Voted for the United Russia party : dummy (zero if voted but not for UR or did not vote, #
+# NA if voting or which party is NA)#
+data$votedur<-ifelse(data$voted==1, data$votedur<-recode(data$prtvtbru, "1=1; NA=NA; else=0"),#
+                     ifelse(is.na(data$voted), data$votedur<-NA, #
+                            data$votedur<-0))#
+#partyur Feels close to the United Russia party#
+data$partyur<-recode(data$prtclbru, "1=1; NA=NA; else=0")#
+#domicat Domicile - categorical: 1 - big city and its suburbs, 2 - small cities, 3 - villages#
+data$domicat<-recode(data$domicil, "1:2=1; 3=2; 4:5=3")#
+#town Domicile: living in a town - dummy#
+data$town<-recode(data$domicat, "2=1; 1=0; 3=0")#
+#vilg Domicile: living in a village - dummy #
+data$vilg<-recode(data$domicat, "3=1; 1:2=0")#
+# remove variables: gndr, eisced, netuse, wrkorg, towntype, vote#
+data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru",#
+	"prtclbru"),info=FALSE )#
+###  Save the processed ESS Russia data#
+###  in a file called "ESS5RU_clean.Rdata"#
+###  stored in the "analysis-data" folder#
+AnalysisData <- "../analysis-data"#
+save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)#
+# export a data set for the analysis in MPLUS #
+# this creates file with variable names. #
+cat(names(data_mplus), file = paste(AnalysisData, "/datamplus.var", sep = ""))#
+# this creates file with the data itself#
+# strange solution with cbinding is to avoid "" around rownames. #
+write.table(cbind(1:nrow(data_mplus), data_mplus), #
+		file = paste(AnalysisData, "/datamplus.dat", sep = ""), #
+		sep ="\t", na="99", col.names = FALSE, row.names = FALSE)#
+# After running M-Plus code, load exported data set and process it into Analysis Data folder. #
+# The data from M-Plus is already saved in the folder to ensure reproducability even without #
+# an M-Plus licence. #
+data_out <- read.table("../analysis-data/ess5ru_from_mplus.txt", quote="\"", na.strings = "*")#
+save(data_out, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))#
+#Remove ESS5RU.Rdata from the "Command Files" folder#
+file.remove("ESS5RU.Rdata")
+getwd()
+library(ggplot2)#
+library(stargazer)#
+std <- function(x) sd(x)/sqrt(length(x))#
+#
+set.seed(13012)#
+#
+####   Set working directory#
+####   The working directory should be set to the "Command files" directory in which this script is stored.#
+####   In the command below, replace "<PATH TO `Command files' DIRECTORY>" with the directory path (for the computer you are#
+####   working on) to the "Command files" directory.#
+#
+setwd("<PATH TO `Command files' DIRECTORY>")#
+#
+###  load dataset#
+#
+load("../Analysis Data/ESS5RU_clean.Rdata")#
+#update column names from M PLUS code #
+colnames(data_out)<-c("TRSTPRL", "TRSTLGL", "TRSTPLC", "TRSTPLT", "TRSTPRT", #
+                      "PARTYUR", "STFECON", "AGEA", "EDUSECON", "EDUPRIMA", #
+                      "MALE", "WORKORG", "TRSTPPL", "POLINTR", "INTERNET", #
+                      "VOTED", "TOWN", "VILG", "ID", "TR", "C_TR", "CPROB1", #
+                      "CPROB2", "C")#
+#
+# rescale trust index to original 0 - 10 scale#
+data_out$TR <- (data_out$TR - min(data_out$TR)) / (-min(data_out$TR) + max(data_out$TR)) * 10#
+#
+################################################
+# Descriptive statistics - Preliminary analysis #
+################################################
+#
+# GENERATIONS #
+#
+# create variable with generations#
+data_out$AGEGEN<-recode(data_out$AGEA, "0:25='1'; 26:34='2'; 35:40='3'; 41:60='4'; 61:71='5'; 72:hi='6'; else='NA'")#
+data_out$AGEGEN <- factor(data_out$AGEGEN, #
+                          labels = c("Putin's (18-25)", "Yeltsin's (25-34)",#
+                                     "Gorbachev's (35-40)", "Brezhnev's (41-60)",#
+                                     "Khruschev's (61-71)", "Stalin's (72- )"))#
+#
+# calculate mean and standard error for each group #
+a<-tapply(data_out$TR, data_out$AGEGEN, mean)#
+b<-tapply(data_out$TR, data_out$AGEGEN, std)*2#
+ab <- factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN))#
+#
+# create table with results#
+resultA<-data.frame(mean_age = a, se = b, #
+                    gen = factor(levels(data_out$AGEGEN), levels = levels(data_out$AGEGEN)))#
+#
+# EDUCATION #
+#
+data_out$EDUCAT<-ifelse(data_out$EDUPRIMA==1, data_out$EDUCAT<-3, #
+                        ifelse(data_out$EDUSECON==1, data_out$EDUCAT<-2,#
+                               data_out$EDUCAT<-1))#
+data_out$EDUCAT <- factor(data_out$EDUCAT, #
+                          labels = c("Higher edu.", "Secondary edu.",#
+                                     "Primary edu."))#
+#
+# calculate mean and standard error for each group #
+c<-tapply(data_out$TR, data_out$EDUCAT, mean)#
+d<-tapply(data_out$TR, data_out$EDUCAT, std)*2#
+cd <- factor(levels(data_out$EDUCAT), levels = levels(data_out$EDUCAT))#
+resultB<-data.frame(mean_edu = c, se = d,#
+                    edu = factor(levels(data_out$EDUCAT), #
+                                 levels = levels(data_out$EDUCAT)))#
+#
+# POPULATION SIZE#
+#
+# create single factor from the two dummies (and reference group)#
+data_out$POPSIZE <-ifelse(data_out$VILG==1, 3, #
+                          ifelse(data_out$TOWN==1, 2, #
+                                 1))#
+#
+data_out$POPSIZE <- factor(data_out$POPSIZE, labels = c("City", "Town", "Village"))#
+#
+# calculate mean and standard error for each group #
+e<-tapply(data_out$TR, data_out$POPSIZE, mean)#
+f<-tapply(data_out$TR, data_out$POPSIZE, std)*2#
+resultC<-data.frame(mean_popsize = e, #
+                    se = f, #
+                    popsize = factor(levels(data_out$POPSIZE), #
+                                 levels = levels(data_out$POPSIZE))#
+                    )#
+#
+# PROTESTER#
+#
+data_out$PROTEST <- ifelse(data_out$AGEA < 35 & #
+                                   data_out$EDUCAT == "Higher edu." & #
+                                   data_out$POPSIZE == "City", 1, #
+                           0)#
+data_out$PROTEST <- 0 #
+data_out$PROTEST[data_out$AGEGEN == "Putin's (18-25)" & #
+                         data_out$EDUCAT == "Higher edu." & #
+                         data_out$POPSIZE == "City"] <- 1#
+#
+data_out$PROTEST <- factor(data_out$PROTEST, #
+                           labels = c("Non-protester", "Protester"))#
+#
+data_out$PROTEST <- relevel(data_out$PROTEST, ref = 2)#
+#
+# calculate mean and standard error for each group #
+g <- tapply(data_out$TR, data_out$PROTEST, mean)#
+h <- tapply(data_out$TR, data_out$PROTEST, std)#
+#
+resultD <- data.frame(mean_protest = g, #
+                      se = h, #
+                      protest = factor(levels(data_out$PROTEST),#
+                                        levels = levels(data_out$PROTEST))#
+                      )#
+#
+# combine all 4 variables into one data frame#
+resultAll <- data.frame(#
+        mean = c(a, c, e, g), #
+        se = c(b, d, f, h),#
+        group = factor(c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                         levels(data_out$POPSIZE), levels(data_out$PROTEST)), #
+                       levels = c(levels(data_out$AGEGEN), levels(data_out$EDUCAT), #
+                                  levels(data_out$POPSIZE), levels(data_out$PROTEST))#
+                       ),#
+        Variables = factor(c(rep("Generation", 6), rep("Education", 3), #
+                            rep("Pop.size", 3), rep("Protest", 2)),#
+                          levels = c("Protest", "Pop.size", "Education",#
+                                     "Generation"))#
+                        )#
+#######################################
+# Figure 1. Stratified means of trust. #
+#
+f1 <- ggplot(resultAll, aes(x = group, y = mean, fill = Variables)) + #
+        geom_bar(stat = "identity", color = "black", width = 0.8) + #
+        geom_errorbar(aes(ymin = resultAll$mean - resultAll$se, #
+                          ymax = resultAll$mean + resultAll$se), width = 0.3) + #
+        # geom_hline(yintercept = mean(data_out$TR, na.rm = T)) +#
+        geom_vline(xintercept = c(6.5, 9.5, 12.5), size = 1) +#
+        coord_flip() + #
+        scale_fill_grey() +#
+        theme_bw() + #
+        theme(legend.position = c(.9, .15)) +#
+        xlab("") + #
+        # ylim(c(0, 3)) +#
+        ylab("Mean Trust index")#
+f1#
+# ggsave("Figure1.pdf")#
+#
+#Stratified means for the mixture model's latent classes #
+tapply(data_out$TR, data_out$C, mean)#
+#
+#Welch Two Sample t-test on latent classes' mean trust#
+t.test(data_out$TR~data_out$C)#
+#
+# size of latent classes#
+table(data_out$C) # number#
+prop.table(table(data_out$C)) #proportion#
+#
+#######################################
+#TABLE 1/A. Lin reg. on trust index NO INTERACTIONS#
+model.1a <- lm(formula=TR ~ STFECON + AGEA + EDUSECON + EDUPRIMA + TOWN + VILG,#
+               data=data_out,na.action=na.omit)#
+summary(model.1a)#
+#
+#TABLE 1/B. Lin reg. on trust index WITH INTERACTIONS#
+model.1b <- lm(formula=TR ~ STFECON*(AGEA + EDUSECON + EDUPRIMA + TOWN + VILG),#
+               data=data_out,na.action=na.omit)#
+summary(model.1b)#
+#
+#TABLE 1/C. Lin reg. on trust index WITH PROTEST-DUMMY INTERACTION#
+model.1c <- lm(formula=TR ~ STFECON*PROTEST, data=data_out,na.action=na.omit)#
+summary(model.1c)#
+#
+# Combine 3 models into a single table. #
+stargazer(model.1a, model.1b, model.1c, #
+          type = "text",#
+          # out = "model.tex",#
+          column.labels = c("Model 1", "Model 2", "Model 3"),#
+          header = F,#
+          single.row = T,#
+          align = T,#
+          title = "OLS Regression of Trust index on main socio-economic variables",#
+          dep.var.labels.include = F,#
+          dep.var.caption = "",#
+          covariate.labels = c("Satisfaction with economy", "Age", "Secondary education",#
+                               "Primary education", "Town", "Village", #
+                               "Satisfaction with economy x Age", #
+                               "Satisfaction with economy x Secondary ed.",#
+                               "Satisfaction with economy x Primary ed.", #
+                               "Satisfaction with economy x Town", #
+                               "Satisfaction with economy x Village", #
+                               "Non-protest group", #
+                               "Satisfaction with economy x Non-protest g.", #
+                               "Intercept"),#
+          omit.stat = c("rsq", "ser", "f")#
+          )#
+#####################################################
+# FIGURE 3. Latent groups from mixture model plotted #
+#
+data_out$C <- as.factor(data_out$C)#
+levels(data_out$C) <- c("Pragmatic salience group", "Ideology salience group")#
+#
+r <- ggplot(data_out, aes(x = STFECON, y = TR)) + #
+        geom_jitter() + #
+        geom_smooth(method = "lm") + #
+        facet_grid( ~ C) + #
+        xlab("Satisfaction with economy") + #
+        ylab("Trust index") + #
+        # ggtitle("Figure 3. Correlation between Satisfaction with economy and Trust \n for Pragmacy and Ideology salience groups") + #
+        theme_bw()#
+r#
+#
+# ggsave("Figure3.pdf")#
+### Save data file so data_appendix can use recoded variables in data analysis. #
+#
+AnalysisData <- "../analysis-data"#
+save(data_out, file = paste(AnalysisData, "/ESS5RU_final.Rdata", sep = ""))

@@ -1,0 +1,48 @@
+DATA: FILE IS datamplus.dat;
+
+DEFINE:
+If (agea GE 72) THEN stalin = 1 else stalin = 0; 
+If (agea GE 61 AND agea LT 72) THEN krus   = 1 else krus   = 0;
+If (agea GE 41 AND agea LT 61) THEN brez   = 1 else brez   = 0;
+If (agea GE 34 AND agea LT 41) THEN gorb   = 1 else gorb   = 0;
+If (agea GE 25 AND agea LT 34) THEN jeltz  = 1 else jeltz  = 0;
+if (agea LT 25) THEN put  = 1 else put  = 0;
+
+VARIABLE: NAMES ARE r id stfecon trstprl trstlgl trstplc trstplt trstprt trstppl
+agea polintr edusecon eduprima male workorg internet voted partyur votedur town
+vilg;
+
+USEVARIABLES ARE 
+!stfdem 
+stfecon
+trstprl trstlgl trstplc trstplt trstprt
+;
+
+MISSING ARE ALL (99);
+
+IDVAR = id;
+
+CLASSES = c(2); 
+
+ANALYSIS: TYPE = MIXTURE;
+STARTS = 300 30;
+PROCESSORS = 15;
+ALGORITHM=INTEGRATION;
+INTEGRATION=MONTECARLO;
+
+MODEL:
+
+%OVERALL%
+
+tr by trstprl trstlgl trstplc trstplt trstprt;
+
+tr on stfecon;
+
+%c#1%
+
+tr on stfecon@0;
+!tr on stfecon;
+
+OUTPUT: STDYX TECH1 TECH8;
+
+SAVEDATA: FILE IS newoutpartyur2.txt; SAVE=CPROBABILITIES; SAVE=FSCORES;

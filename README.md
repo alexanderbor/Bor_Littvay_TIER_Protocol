@@ -1,74 +1,89 @@
-# The TIER Documentation Protocol v2.0 for R
+---
+title: "ReadME file for Bor & Littvay: Putin's Performance Dilemma..."
+author: Alexander Bor & Levente Littvay
+date: 2016.08.17.
+---
 
-## Overview 
 
-The TIER Documentation Protocol provides instructions for assembling a 
-set of electronic files that document all the steps of data processing 
-and analysis you conduct for an empirical research paper. 
+The data management and analysisforthis paper were conducted with R version 3.3.0 (2016-05-03) -- "Supposedly Educational" and with Mplus VERSION 7.4. 
 
-The documentation specified by the Protocol contains all the data, 
-computer programs, and explanatory information an independent researcher 
-would need to be able to replicate the data processing and analysis you 
-conducted for the project and to reproduce exactly all the results 
-reported in your paper.
+__Required packages:__
 
-## ProjectTIER_R repository
+Install these with dependencies first in order for the code to run properly. 
 
-The instructions presented in this repository are written for users of R. 
-In a few places, they use R-specific terminology. For example, we refer to 
-command files as scripts, and their names are followed by the .R 
-extension. But the R-specific terminology that appears in these 
-instructions can be easily translated to any of the major statistical 
-packages (such as SPSS, SAS, Stata or Matlab) or other programming 
-languages.
+- *car* version 2.1-3
+- *foreign* version 0.8-66
+- *gdata* version 2.17.0
+- *ggplot2* version 2.1.0
+- *stargazer* version 5.2 
 
-## Getting started
+The documentation provided hereis stored in folders that are organized as illustrated below: 
 
-To get started you can fork and then clone this repository which will create 
-a copy of the folder structure recommended in the Project TIER protocol.
-
-Below we describe how to organize your analysis according to the 
-Project TIER protocol, i.e. which components of your analysis should go 
-into which folder.
-
-## Hierarchy and description of files and folders
-
-Your repository should have the following hierarchy of files and folders:
-
-- An electronic copy of your complete final paper
-- The `README.md` file for your repository
+- An electronic copy of the complete final paper: Bor_Littvay_Putins_Performance_dilemma.pdf 
+- This `README.md` file for your repository
 - Original Data and Metadata - `original-data-and-metadata`
     + Original Data - `original-data`
+        * ESS5RU.sav
     + Metadata - `metadata`
-        - Metadata Guide - `metadata_guide.md`
-        - Supplements - `supplements`
+        * Metadata Guide - `metadata_guide.md`
+        * Supplements - `supplements`
+            - ESS5_data_protocol.pdf
+            - ESS5_main_and_supplementary_a_questionnaires_RU.pdf
+            - ESS5_source_main_questionnaire_EN.pdf
 - Processing and Analysis - `processing-and-analysis`
     + Importable Data - `importable-data`
+        * ESS5RU.sav
     + Command Files - `command-files`
+        * ess_mplus_2wayint.inp
+        * ess_mplus_2wayint.out
+        * ess_mplus_3wayint.inp
+        * ess_mplus_3wayint.out
+        * ess_mplus_model1.inp
+        * ess_mplus_model1.out
+        * ess_mplus_model2.inp
+        * ess_mplus_model2.out
+        * ess_mplus_model3.inp
+        * ess_mplus_model3.out
+        * ess5ru_analysis.R
+        * ess5ru_importing.R
+        * ess5ru_processing.R
+        * README.md
     + Analysis Data - `analysis-data`
+        * data_appendix.pdf
+        * data_appendix.Rmd
+        * datamplus.dat
+        * datamplus.var
+        * ESS5RU_clean.Rdata
+        * ESS5RU_final.Rdata
+        * ess5ru_from_mplus.txt
+        * README.md
 
-Contents of these files and folders are described in the `README` files
-within these folders.
 
-## README
+## To reproduce the tables, figures and statistical results reported in the text of the paper:
 
-The `README.md` file in the top hierarchy of your repository (this 
-file) gives information about all the other files included in the 
-documentation for your paper. In particular, the `README` file should:
+1. Copy the “Processing and Analysis” folder, and all of its contents, on to the hard disk of the computer you are working on.
 
-1. state what statistical software or other computer programs are 
-needed to run the command files.
-1. explain the structure of the hierarchy of folders in which the 
-documentation is stored, and briefly describe each of the files 
-included in the documentation.
-1. describe precisely any changes you made to your original data files 
-to create the corresponding versions saved in your `importable-data` 
-folder.
-1. give explicit, step-by-step instructions for using your 
-documentation to replicate the statistical results reported in your 
-paper.
+1. Launch R and set the working directory to the “Command Files” folder in each time you see `setwd("<PATH TO 'Command files' DIRECTORY>”)`. 
 
-The README should be a Markdown document so that it can be 
-rendered properly on GitHub, and any changes can be tracked. It should 
-be named `README.md`. This file should be stored in the top level of 
-your repository.
+1. Execute the *ess5ru_importing.R* file.  
+This will load the data file and save it as *ESS5RU.Rdata* to the "Command Files" folder. 
+
+2. Execute the *ess5ru_processing.R* command file.  
+This subsets the relevant data and recodes some of the variables. It has two outputs. 
+    - First the data is exported in formats compatible with Mplus to the files *datamplus.var* and *datamplus.dat*. Both of these are saved in the "Analysis Data" folder. 
+    - Second in order to ensure that most of the analysis could be run without an Mplus licence, the Mplus data output is imported and exported as *ESS5RU_clean.Rdata*. This is also saved in the "Analysis Data" folder. 
+    - Finally this command will erase *ESS5RU.Rdata* from the "Command files" folder. 
+
+3. There are five pairs of Mplus files. 
+Three models reported in the paper and two additional robustness checks (referenced in footnote 6.). The .inp files specify the models, the .out files contain results. 
+    - *ess_mplus_model1.inp* is a model with no latent classes
+    - *ess_mplus_model2.inp* is a model with two latent classes but no predictors
+    - *ess_mplus_model3.inp* is a model with two latent classes and predictors. 
+    - *ess_mplus_2wayint.inp* is a model checking robustness with all relevant two-way interactions specified and included in the model. 
+    - *ess_mplus_3wayint.inp* is a model checking robustness with a three-way interaction, but it's results should be ignored because of data limitation issues. 
+Model fit statistics for the 3 models are reported in Table 2. 
+
+4. Execute the command file *ess5ru_analysis.R* 
+This import the data including latent class information from the Mplus model and produces all statistical tables and models. 
+
+5. Finally,  run *data_appendix.Rmd* which contains a brief explanation and descriptive statistics on all variables used in the data. 

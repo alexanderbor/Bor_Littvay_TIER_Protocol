@@ -1,0 +1,2230 @@
+Mplus VERSION 7
+MUTHEN & MUTHEN
+10/25/2013  12:54 PM
+
+INPUT INSTRUCTIONS
+
+  DATA: FILE IS datamplus.dat;
+
+  DEFINE:
+  If (agea GE 72) THEN stalin = 1 else stalin = 0;
+  If (agea GE 61 AND agea LT 72) THEN krus   = 1 else krus   = 0;
+  If (agea GE 41 AND agea LT 61) THEN brez   = 1 else brez   = 0;
+  If (agea GE 34 AND agea LT 41) THEN gorb   = 1 else gorb   = 0;
+  If (agea GE 25 AND agea LT 34) THEN jeltz  = 1 else jeltz  = 0;
+  if (agea LT 25) THEN put  = 1 else put  = 0;
+
+  VARIABLE: NAMES ARE r id stfecon trstprl trstlgl trstplc trstplt trstprt trstppl
+  agea polintr edusecon eduprima male workorg internet voted partyur votedur town
+  vilg;
+
+  USEVARIABLES ARE
+  !stfdem
+  stfecon
+  trstprl trstlgl trstplc trstplt trstprt
+
+  agea edusecon eduprima male workorg
+  trstppl polintr internet voted town vilg
+
+  !votedur
+  partyur
+  ;
+
+  MISSING ARE ALL (99);
+
+  IDVAR = id;
+
+  CLASSES = c(2);
+
+  ANALYSIS: TYPE = MIXTURE;
+  STARTS = 300 30;
+  PROCESSORS = 15;
+  ALGORITHM=INTEGRATION;
+  INTEGRATION=MONTECARLO;
+
+  MODEL:
+
+  %OVERALL%
+
+  tr by trstprl trstlgl trstplc trstplt trstprt;
+
+  tr on stfecon;
+
+  c on agea edusecon eduprima town vilg stfecon male workorg trstppl polintr
+  internet voted
+  !votedur
+  partyur
+  ;
+
+  !votedur;
+  partyur;
+
+  %c#1%
+
+  tr on stfecon@0;
+  !tr on stfecon;
+
+  OUTPUT: STDYX TECH1 TECH8;
+
+  SAVEDATA: FILE IS ess5ru_from_mplus.txt; SAVE=CPROBABILITIES; SAVE=FSCORES;
+
+
+
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  438
+*** WARNING
+  Data set contains cases with missing on all variables except
+  x-variables.  These cases were not included in the analysis.
+  Number of cases with missing on all variables except x-variables:  33
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        2124
+
+Number of dependent variables                                    5
+Number of independent variables                                 13
+Number of continuous latent variables                            1
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Continuous
+   TRSTPRL     TRSTLGL     TRSTPLC     TRSTPLT     TRSTPRT
+
+Observed independent variables
+   STFECON     AGEA        EDUSECON    EDUPRIMA    MALE        WORKORG
+   TRSTPPL     POLINTR     INTERNET    VOTED       TOWN        VILG
+   PARTYUR
+
+Continuous latent variables
+   TR
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                  MONTECARLO
+  Number of integration points                                  25
+  Dimensions of numerical integration                            1
+  Adaptive quadrature                                           ON
+  Monte Carlo integration seed                                   0
+Random Starts Specifications
+  Number of initial stage random starts                        300
+  Number of final stage optimizations                           30
+  Number of initial stage iterations                            10
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                       0
+Cholesky                                                       OFF
+
+Input data file(s)
+  datamplus.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            44
+     Number of y missing data patterns          44
+     Number of u missing data patterns           0
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.973
+ TRSTLGL        0.948         0.966
+ TRSTPLC        0.959         0.959         0.983
+ TRSTPLT        0.948         0.937         0.952         0.961
+ TRSTPRT        0.943         0.934         0.947         0.943         0.956
+ PARTYUR        0.434         0.432         0.441         0.430         0.429
+ STFECON        0.973         0.966         0.983         0.961         0.956
+ AGEA           0.973         0.966         0.983         0.961         0.956
+ EDUSECON       0.973         0.966         0.983         0.961         0.956
+ EDUPRIMA       0.973         0.966         0.983         0.961         0.956
+ MALE           0.973         0.966         0.983         0.961         0.956
+ WORKORG        0.973         0.966         0.983         0.961         0.956
+ TRSTPPL        0.973         0.966         0.983         0.961         0.956
+ POLINTR        0.973         0.966         0.983         0.961         0.956
+ INTERNET       0.973         0.966         0.983         0.961         0.956
+ VOTED          0.973         0.966         0.983         0.961         0.956
+ TOWN           0.973         0.966         0.983         0.961         0.956
+ VILG           0.973         0.966         0.983         0.961         0.956
+
+
+           Covariance Coverage
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ PARTYUR        0.447
+ STFECON        0.447         1.000
+ AGEA           0.447         1.000         1.000
+ EDUSECON       0.447         1.000         1.000         1.000
+ EDUPRIMA       0.447         1.000         1.000         1.000         1.000
+ MALE           0.447         1.000         1.000         1.000         1.000
+ WORKORG        0.447         1.000         1.000         1.000         1.000
+ TRSTPPL        0.447         1.000         1.000         1.000         1.000
+ POLINTR        0.447         1.000         1.000         1.000         1.000
+ INTERNET       0.447         1.000         1.000         1.000         1.000
+ VOTED          0.447         1.000         1.000         1.000         1.000
+ TOWN           0.447         1.000         1.000         1.000         1.000
+ VILG           0.447         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ MALE           1.000
+ WORKORG        1.000         1.000
+ TRSTPPL        1.000         1.000         1.000
+ POLINTR        1.000         1.000         1.000         1.000
+ INTERNET       1.000         1.000         1.000         1.000         1.000
+ VOTED          1.000         1.000         1.000         1.000         1.000
+ TOWN           1.000         1.000         1.000         1.000         1.000
+ VILG           1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ VOTED          1.000
+ TOWN           1.000         1.000
+ VILG           1.000         1.000         1.000
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+          -20811.928  781190           219
+          -20898.505  551639           55
+          -20898.509  456213           160
+          -20898.510  195353           225
+          -20898.510  297518           166
+          -20898.513  105435           265
+          -20898.514  496881           192
+          -20898.515  unperturbed      0
+          -20898.520  618000           190
+          -20946.918  46437            153
+          -20951.080  569833           85
+          -20957.616  915107           54
+          -20957.775  717754           180
+          -20958.483  802779           122
+          -20968.754  468036           131
+          -20968.756  939021           8
+          -20968.759  70118            104
+          -20968.760  43523            297
+          -20968.761  545140           278
+          -20968.764  987090           70
+          -20968.765  399848           220
+          -20968.767  608849           224
+          -20968.767  939709           112
+          -20968.768  131856           90
+          -20968.768  603842           61
+          -20968.768  871851           257
+          -20968.768  372176           23
+          -20968.769  462228           298
+          -20968.769  455617           242
+          -20968.769  432148           30
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       33
+
+Loglikelihood
+
+          H0 Value                      -20811.928
+          H0 Scaling Correction Factor      1.3576
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41689.855
+          Bayesian (BIC)                 41876.670
+          Sample-Size Adjusted BIC       41771.825
+            (n* = (n + 2) / 24)
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1        380.80945          0.17929
+       2       1743.19055          0.82071
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASS PATTERNS
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1        379.46471          0.17866
+       2       1744.53529          0.82134
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.758
+
+
+CLASSIFICATION OF INDIVIDUALS BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1              338          0.15913
+       2             1786          0.84087
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2
+
+    1   0.834    0.166
+    2   0.055    0.945
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ TR       BY
+    TRSTPRL            1.000      0.000    999.000    999.000
+    TRSTLGL            0.908      0.018     49.469      0.000
+    TRSTPLC            0.888      0.019     46.440      0.000
+    TRSTPLT            0.998      0.020     48.746      0.000
+    TRSTPRT            0.968      0.022     43.972      0.000
+
+ TR         ON
+    STFECON            0.000      0.000    999.000    999.000
+
+ Means
+    PARTYUR            0.618      0.016     39.535      0.000
+
+ Intercepts
+    TRSTPRL            1.669      0.086     19.344      0.000
+    TRSTLGL            2.006      0.088     22.693      0.000
+    TRSTPLC            1.827      0.086     21.221      0.000
+    TRSTPLT            1.222      0.079     15.440      0.000
+    TRSTPRT            1.295      0.080     16.106      0.000
+    TR                 5.427      0.259     20.947      0.000
+
+ Variances
+    PARTYUR            0.237      0.004     53.141      0.000
+
+ Residual Variances
+    TRSTPRL            1.937      0.132     14.732      0.000
+    TRSTLGL            2.879      0.194     14.804      0.000
+    TRSTPLC            3.111      0.190     16.338      0.000
+    TRSTPLT            0.861      0.103      8.378      0.000
+    TRSTPRT            1.203      0.135      8.896      0.000
+    TR                 2.325      0.117     19.881      0.000
+
+Latent Class 2
+
+ TR       BY
+    TRSTPRL            1.000      0.000    999.000    999.000
+    TRSTLGL            0.908      0.018     49.469      0.000
+    TRSTPLC            0.888      0.019     46.440      0.000
+    TRSTPLT            0.998      0.020     48.746      0.000
+    TRSTPRT            0.968      0.022     43.972      0.000
+
+ TR         ON
+    STFECON            0.328      0.027     11.952      0.000
+
+ Means
+    PARTYUR            0.618      0.016     39.535      0.000
+
+ Intercepts
+    TRSTPRL            1.669      0.086     19.344      0.000
+    TRSTLGL            2.006      0.088     22.693      0.000
+    TRSTPLC            1.827      0.086     21.221      0.000
+    TRSTPLT            1.222      0.079     15.440      0.000
+    TRSTPRT            1.295      0.080     16.106      0.000
+    TR                 0.000      0.000    999.000    999.000
+
+ Variances
+    PARTYUR            0.237      0.004     53.141      0.000
+
+ Residual Variances
+    TRSTPRL            1.937      0.132     14.732      0.000
+    TRSTLGL            2.879      0.194     14.804      0.000
+    TRSTPLC            3.111      0.190     16.338      0.000
+    TRSTPLT            0.861      0.103      8.378      0.000
+    TRSTPRT            1.203      0.135      8.896      0.000
+    TR                 2.325      0.117     19.881      0.000
+
+Categorical Latent Variables
+
+ C#1        ON
+    AGEA               0.029      0.007      3.974      0.000
+    EDUSECON           0.013      0.216      0.058      0.954
+    EDUPRIMA           0.637      0.283      2.246      0.025
+    TOWN              -0.086      0.208     -0.417      0.677
+    VILG              -0.030      0.245     -0.123      0.902
+    STFECON            0.365      0.048      7.590      0.000
+    MALE              -0.293      0.188     -1.560      0.119
+    WORKORG            0.353      0.341      1.036      0.300
+    TRSTPPL            0.149      0.037      4.078      0.000
+    POLINTR            0.629      0.191      3.288      0.001
+    INTERNET           0.459      0.234      1.960      0.050
+    VOTED              0.918      0.266      3.456      0.001
+    PARTYUR            0.965      0.262      3.684      0.000
+
+ Intercepts
+    C#1               -7.013      0.675    -10.382      0.000
+
+
+LOGISTIC REGRESSION ODDS RATIO RESULTS
+
+Categorical Latent Variables
+
+ C#1      ON
+    AGEA               1.030
+    EDUSECON           1.013
+    EDUPRIMA           1.890
+    TOWN               0.917
+    VILG               0.970
+    STFECON            1.440
+    MALE               0.746
+    WORKORG            1.423
+    TRSTPPL            1.161
+    POLINTR            1.876
+    INTERNET           1.582
+    VOTED              2.504
+    PARTYUR            2.625
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ TR       BY
+    TRSTPRL            0.739      0.016     46.853      0.000
+    TRSTLGL            0.632      0.021     29.631      0.000
+    TRSTPLC            0.609      0.020     30.085      0.000
+    TRSTPLT            0.854      0.017     49.461      0.000
+    TRSTPRT            0.803      0.021     38.292      0.000
+
+ TR         ON
+    STFECON            0.000      0.000    999.000    999.000
+
+ Means
+    PARTYUR            1.270      0.042     29.973      0.000
+
+ Intercepts
+    TRSTPRL            0.808      0.038     21.431      0.000
+    TRSTLGL            0.916      0.036     25.624      0.000
+    TRSTPLC            0.822      0.034     23.978      0.000
+    TRSTPLT            0.686      0.040     16.939      0.000
+    TRSTPRT            0.704      0.039     17.934      0.000
+    TR                 3.559      0.165     21.543      0.000
+
+ Variances
+    PARTYUR            1.000      0.000    999.000    999.000
+
+ Residual Variances
+    TRSTPRL            0.455      0.023     19.520      0.000
+    TRSTLGL            0.600      0.027     22.238      0.000
+    TRSTPLC            0.629      0.025     25.551      0.000
+    TRSTPLT            0.271      0.029      9.197      0.000
+    TRSTPRT            0.356      0.034     10.578      0.000
+    TR                 1.000      0.000    999.000    999.000
+
+Latent Class 2
+
+ TR       BY
+    TRSTPRL            0.770      0.015     50.301      0.000
+    TRSTLGL            0.669      0.021     31.570      0.000
+    TRSTPLC            0.646      0.020     31.639      0.000
+    TRSTPLT            0.875      0.016     55.672      0.000
+    TRSTPRT            0.829      0.019     42.583      0.000
+
+ TR         ON
+    STFECON            0.421      0.029     14.690      0.000
+
+ Means
+    PARTYUR            1.270      0.042     29.973      0.000
+
+ Intercepts
+    TRSTPRL            0.765      0.040     19.010      0.000
+    TRSTLGL            0.879      0.038     23.036      0.000
+    TRSTPLC            0.791      0.036     21.821      0.000
+    TRSTPLT            0.637      0.043     14.863      0.000
+    TRSTPRT            0.660      0.042     15.821      0.000
+    TR                 0.000      0.000    999.000    999.000
+
+ Variances
+    PARTYUR            1.000      0.000    999.000    999.000
+
+ Residual Variances
+    TRSTPRL            0.407      0.024     17.234      0.000
+    TRSTLGL            0.552      0.028     19.484      0.000
+    TRSTPLC            0.583      0.026     22.098      0.000
+    TRSTPLT            0.234      0.028      8.513      0.000
+    TRSTPRT            0.312      0.032      9.674      0.000
+    TR                 0.822      0.024     34.004      0.000
+
+
+R-SQUARE
+
+Class 1
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRSTPRL            0.545      0.023     23.426      0.000
+    TRSTLGL            0.400      0.027     14.816      0.000
+    TRSTPLC            0.371      0.025     15.043      0.000
+    TRSTPLT            0.729      0.029     24.731      0.000
+    TRSTPRT            0.644      0.034     19.146      0.000
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TR                 0.000      0.000    999.000    999.000
+
+Class 2
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRSTPRL            0.593      0.024     25.150      0.000
+    TRSTLGL            0.448      0.028     15.785      0.000
+    TRSTPLC            0.417      0.026     15.820      0.000
+    TRSTPLT            0.766      0.028     27.836      0.000
+    TRSTPRT            0.688      0.032     21.292      0.000
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TR                 0.178      0.024      7.345      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.135E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 1
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1                  1             2             3             4             5
+
+
+           NU
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ 1                  0             0             0
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            6             0             0             0             0
+ TRSTPLC            7             0             0             0             0
+ TRSTPLT            8             0             0             0             0
+ TRSTPRT            9             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           LAMBDA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           LAMBDA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TRSTPRL            0             0             0             0
+ TRSTLGL            0             0             0             0
+ TRSTPLC            0             0             0             0
+ TRSTPLT            0             0             0             0
+ TRSTPRT            0             0             0             0
+ PARTYUR            0             0             0             0
+ STFECON            0             0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0
+ VOTED              0             0             0             0
+ TOWN               0             0             0             0
+ VILG               0             0             0             0
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL           10
+ TRSTLGL            0            11
+ TRSTPLC            0             0            12
+ TRSTPLT            0             0             0            13
+ TRSTPRT            0             0             0             0            14
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ PARTYUR            0
+ STFECON            0             0
+ AGEA               0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ MALE               0
+ WORKORG            0             0
+ TRSTPPL            0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ VOTED              0
+ TOWN               0             0
+ VILG               0             0             0
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ 1                 15            16             0             0             0
+
+
+           ALPHA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ 1                  0             0             0             0
+
+
+           BETA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           BETA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           BETA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TR                 0             0             0             0
+ PARTYUR            0             0             0             0
+ STFECON            0             0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0
+ VOTED              0             0             0             0
+ TOWN               0             0             0             0
+ VILG               0             0             0             0
+
+
+           PSI
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR                17
+ PARTYUR            0            18
+ STFECON            0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           PSI
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ EDUPRIMA           0
+ MALE               0             0
+ WORKORG            0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           PSI
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ INTERNET           0
+ VOTED              0             0
+ TOWN               0             0             0
+ VILG               0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 2
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1                  1             2             3             4             5
+
+
+           NU
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ 1                  0             0             0
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            6             0             0             0             0
+ TRSTPLC            7             0             0             0             0
+ TRSTPLT            8             0             0             0             0
+ TRSTPRT            9             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           LAMBDA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           LAMBDA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TRSTPRL            0             0             0             0
+ TRSTLGL            0             0             0             0
+ TRSTPLC            0             0             0             0
+ TRSTPLT            0             0             0             0
+ TRSTPRT            0             0             0             0
+ PARTYUR            0             0             0             0
+ STFECON            0             0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0
+ VOTED              0             0             0             0
+ TOWN               0             0             0             0
+ VILG               0             0             0             0
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL           10
+ TRSTLGL            0            11
+ TRSTPLC            0             0            12
+ TRSTPLT            0             0             0            13
+ TRSTPRT            0             0             0             0            14
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ PARTYUR            0
+ STFECON            0             0
+ AGEA               0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ MALE               0
+ WORKORG            0             0
+ TRSTPPL            0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           THETA
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ VOTED              0
+ TOWN               0             0
+ VILG               0             0             0
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ 1                  0            16             0             0             0
+
+
+           ALPHA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ 1                  0             0             0             0
+
+
+           BETA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR                 0             0            19             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           BETA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ AGEA               0             0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           BETA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TR                 0             0             0             0
+ PARTYUR            0             0             0             0
+ STFECON            0             0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0
+ EDUPRIMA           0             0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0
+ INTERNET           0             0             0             0
+ VOTED              0             0             0             0
+ TOWN               0             0             0             0
+ VILG               0             0             0             0
+
+
+           PSI
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR                17
+ PARTYUR            0            18
+ STFECON            0             0             0
+ AGEA               0             0             0             0
+ EDUSECON           0             0             0             0             0
+ EDUPRIMA           0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           PSI
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ EDUPRIMA           0
+ MALE               0             0
+ WORKORG            0             0             0
+ TRSTPPL            0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ TOWN               0             0             0             0             0
+ VILG               0             0             0             0             0
+
+
+           PSI
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ INTERNET           0
+ VOTED              0             0
+ TOWN               0             0             0
+ VILG               0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+ 1                 20             0
+
+
+           GAMMA(C)
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ C#1                0            21            22            23            24
+ C#2                0             0             0             0             0
+
+
+           GAMMA(C)
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ C#1               25            26            27            28            29
+ C#2                0             0             0             0             0
+
+
+           GAMMA(C)
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ C#1               30            31            32            33
+ C#2                0             0             0             0
+
+
+     STARTING VALUES FOR LATENT CLASS 1
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1              3.518         3.698         3.473         3.058         3.078
+
+
+           NU
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ 1              0.000         0.000         0.000
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TRSTPRL        1.000         0.000         0.000         0.000         0.000
+ TRSTLGL        1.000         0.000         0.000         0.000         0.000
+ TRSTPLC        1.000         0.000         0.000         0.000         0.000
+ TRSTPLT        1.000         0.000         0.000         0.000         0.000
+ TRSTPRT        1.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         1.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         1.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         1.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         1.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         1.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         1.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         1.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       1.000         0.000         0.000         0.000
+ VOTED          0.000         1.000         0.000         0.000
+ TOWN           0.000         0.000         1.000         0.000
+ VILG           0.000         0.000         0.000         1.000
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        3.726
+ TRSTLGL        0.000         3.711
+ TRSTPLC        0.000         0.000         3.723
+ TRSTPLT        0.000         0.000         0.000         3.175
+ TRSTPRT        0.000         0.000         0.000         0.000         3.177
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ PARTYUR        0.000
+ STFECON        0.000         0.000
+ AGEA           0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ MALE           0.000
+ WORKORG        0.000         0.000
+ TRSTPPL        0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ VOTED          0.000
+ TOWN           0.000         0.000
+ VILG           0.000         0.000         0.000
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ 1              0.000         0.620         0.000         0.000         0.000
+
+
+           ALPHA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000
+
+
+           BETA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000
+
+
+           PSI
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR             0.050
+ PARTYUR        0.000         0.118
+ STFECON        0.000         0.000         2.567
+ AGEA           0.000         0.000         0.000       146.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.109
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ EDUPRIMA       0.049
+ MALE           0.000         0.121
+ WORKORG        0.000         0.000         0.021
+ TRSTPPL        0.000         0.000         0.000         3.334
+ POLINTR        0.000         0.000         0.000         0.000         0.125
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ INTERNET       0.112
+ VOTED          0.000         0.106
+ TOWN           0.000         0.000         0.113
+ VILG           0.000         0.000         0.000         0.087
+
+
+     STARTING VALUES FOR LATENT CLASS 2
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1              3.518         3.698         3.473         3.058         3.078
+
+
+           NU
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ 1              0.000         0.000         0.000
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TRSTPRL        1.000         0.000         0.000         0.000         0.000
+ TRSTLGL        1.000         0.000         0.000         0.000         0.000
+ TRSTPLC        1.000         0.000         0.000         0.000         0.000
+ TRSTPLT        1.000         0.000         0.000         0.000         0.000
+ TRSTPRT        1.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         1.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         1.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         1.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         1.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         1.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         1.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         1.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       1.000         0.000         0.000         0.000
+ VOTED          0.000         1.000         0.000         0.000
+ TOWN           0.000         0.000         1.000         0.000
+ VILG           0.000         0.000         0.000         1.000
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        3.726
+ TRSTLGL        0.000         3.711
+ TRSTPLC        0.000         0.000         3.723
+ TRSTPLT        0.000         0.000         0.000         3.175
+ TRSTPRT        0.000         0.000         0.000         0.000         3.177
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PARTYUR       STFECON       AGEA          EDUSECON      EDUPRIMA
+              ________      ________      ________      ________      ________
+ PARTYUR        0.000
+ STFECON        0.000         0.000
+ AGEA           0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              MALE          WORKORG       TRSTPPL       POLINTR       INTERNET
+              ________      ________      ________      ________      ________
+ MALE           0.000
+ WORKORG        0.000         0.000
+ TRSTPPL        0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              VOTED         TOWN          VILG
+              ________      ________      ________
+ VOTED          0.000
+ TOWN           0.000         0.000
+ VILG           0.000         0.000         0.000
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ 1              0.000         0.620         0.000         0.000         0.000
+
+
+           ALPHA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000
+
+
+           BETA
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000
+ AGEA           0.000         0.000         0.000         0.000
+ EDUSECON       0.000         0.000         0.000         0.000
+ EDUPRIMA       0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000
+
+
+           PSI
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ TR             0.050
+ PARTYUR        0.000         0.118
+ STFECON        0.000         0.000         2.567
+ AGEA           0.000         0.000         0.000       146.000
+ EDUSECON       0.000         0.000         0.000         0.000         0.109
+ EDUPRIMA       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ EDUPRIMA       0.049
+ MALE           0.000         0.121
+ WORKORG        0.000         0.000         0.021
+ TRSTPPL        0.000         0.000         0.000         3.334
+ POLINTR        0.000         0.000         0.000         0.000         0.125
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ TOWN           0.000         0.000         0.000         0.000         0.000
+ VILG           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ INTERNET       0.112
+ VOTED          0.000         0.106
+ TOWN           0.000         0.000         0.113
+ VILG           0.000         0.000         0.000         0.087
+
+
+     STARTING VALUES FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+ 1              0.000         0.000
+
+
+           GAMMA(C)
+              TR            PARTYUR       STFECON       AGEA          EDUSECON
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+
+
+           GAMMA(C)
+              EDUPRIMA      MALE          WORKORG       TRSTPPL       POLINTR
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+
+
+           GAMMA(C)
+              INTERNET      VOTED         TOWN          VILG
+              ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000
+
+
+TECHNICAL 8 OUTPUT
+
+
+  INITIAL STAGE ITERATIONS
+
+
+  TECHNICAL 8 OUTPUT FOR UNPERTURBED STARTING VALUE SET
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.26492508D+05    0.0000000    0.0000000   1062.000  1062.000    EM
+     2 -0.21061554D+05 5430.9541120    0.2049996   1005.846  1118.154    EM
+     3 -0.20986167D+05   75.3870916    0.0035794    959.120  1164.880    EM
+     4 -0.20959566D+05   26.6011525    0.0012676    926.879  1197.121    EM
+     5 -0.20945566D+05   13.9991630    0.0006679    905.414  1218.586    EM
+     6 -0.20935701D+05    9.8649239    0.0004710    891.063  1232.937    EM
+     7 -0.20927936D+05    7.7658897    0.0003709    881.256  1242.744    EM
+     8 -0.20921710D+05    6.2255365    0.0002975    874.284  1249.716    EM
+     9 -0.20916771D+05    4.9390757    0.0002361    869.018  1254.982    EM
+    10 -0.20912906D+05    3.8653777    0.0001848    864.724  1259.276    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 1
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.37436747D+06    0.0000000    0.0000000   1376.932   747.068    EM
+     2 -0.23909696D+05 ************    0.9361331      0.000  2124.000    EM
+     3 -0.23339495D+05  570.2008865    0.0238481      0.000  2124.000    EM
+     4 -0.23061659D+05  277.8365895    0.0119041      0.000  2124.000    EM
+     5 -0.22820111D+05  241.5482672    0.0104740      0.000  2124.000    EM
+     6 -0.22817487D+05    2.6237959    0.0001150      0.000  2124.000    EM
+     7 -0.22814791D+05    2.6953103    0.0001181      0.000  2124.000    EM
+     8 -0.22812018D+05    2.7734767    0.0001216      0.000  2124.000    EM
+     9 -0.22809165D+05    2.8528118    0.0001251      0.000  2124.000    EM
+    10 -0.22806231D+05    2.9342546    0.0001286      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 2
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.12149232D+06    0.0000000    0.0000000   2008.497   115.503    EM
+     2 -0.24118580D+05 ************    0.8014806   2006.007   117.993    EM
+     3 -0.24037592D+05   80.9880568    0.0033579   1999.198   124.802    EM
+     4 -0.24010328D+05   27.2632373    0.0011342   1998.584   125.416    EM
+     5 -0.24001717D+05    8.6118471    0.0003587   2002.196   121.804    EM
+     6 -0.23997528D+05    4.1882747    0.0001745   2006.654   117.346    EM
+     7 -0.23994093D+05    3.4351090    0.0001431   2010.814   113.186    EM
+     8 -0.23991943D+05    2.1505631    0.0000896   2014.956   109.044    EM
+     9 -0.23989646D+05    2.2964443    0.0000957   2018.992   105.008    EM
+    10 -0.23987175D+05    2.4713115    0.0001030   2023.106   100.894    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 3
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.83626151D+05    0.0000000    0.0000000   2123.999     0.001    EM
+     2 -0.23411026D+05 ************    0.7200514   2124.000     0.000    EM
+     3 -0.23024817D+05  386.2093026    0.0164969   2124.000     0.000    EM
+     4 -0.22800654D+05  224.1623659    0.0097357   2124.000     0.000    EM
+     5 -0.22635889D+05  164.7654115    0.0072263   2124.000     0.000    EM
+     6 -0.22521579D+05  114.3096770    0.0050499   2124.000     0.000    EM
+     7 -0.22452185D+05   69.3945440    0.0030812   2124.000     0.000    EM
+     8 -0.22416262D+05   35.9223653    0.0015999   2124.000     0.000    EM
+     9 -0.22400182D+05   16.0804305    0.0007174   2124.000     0.000    EM
+    10 -0.22393771D+05    6.4109997    0.0002862   2124.000     0.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 4
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.31174965D+06    0.0000000    0.0000000   1268.729   855.271    EM
+     2 -0.22674879D+05 ************    0.9272657   1243.850   880.150    EM
+     3 -0.22242095D+05  432.7843594    0.0190865   1227.540   896.460    EM
+     4 -0.21959758D+05  282.3369329    0.0126938   1216.058   907.942    EM
+     5 -0.21714786D+05  244.9719744    0.0111555   1207.108   916.892    EM
+     6 -0.21500124D+05  214.6619008    0.0098855   1199.489   924.511    EM
+     7 -0.21323152D+05  176.9726320    0.0082312   1192.571   931.429    EM
+     8 -0.21191648D+05  131.5036420    0.0061672   1186.035   937.965    EM
+     9 -0.21106417D+05   85.2306628    0.0040219   1179.733   944.267    EM
+    10 -0.21058795D+05   47.6225028    0.0022563   1173.614   950.386    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 5
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.37823068D+06    0.0000000    0.0000000   1691.854   432.146    EM
+     2 -0.22445886D+05 ************    0.9406556   1673.560   450.440    EM
+     3 -0.22011485D+05  434.4006934    0.0193532   1657.235   466.765    EM
+     4 -0.21737200D+05  274.2850665    0.0124610   1642.090   481.910    EM
+     5 -0.21513289D+05  223.9106308    0.0103008   1627.260   496.740    EM
+     6 -0.21334220D+05  179.0691750    0.0083237   1612.269   511.731    EM
+     7 -0.21204292D+05  129.9277982    0.0060901   1596.969   527.031    EM
+     8 -0.21121695D+05   82.5970513    0.0038953   1581.351   542.649    EM
+     9 -0.21075603D+05   46.0919042    0.0021822   1565.416   558.584    EM
+    10 -0.21051700D+05   23.9033254    0.0011342   1549.176   574.824    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 6
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.14052125D+06    0.0000000    0.0000000   2124.000     0.000    EM
+     2 -0.22003255D+05 ************    0.8434169   2124.000     0.000    EM
+     3 -0.21654263D+05  348.9913587    0.0158609   2124.000     0.000    EM
+     4 -0.21468724D+05  185.5391499    0.0085683   2124.000     0.000    EM
+     5 -0.21347984D+05  120.7400182    0.0056240   2124.000     0.000    EM
+     6 -0.21275592D+05   72.3920427    0.0033910   2124.000     0.000    EM
+     7 -0.21237971D+05   37.6213433    0.0017683   2124.000     0.000    EM
+     8 -0.21221012D+05   16.9589839    0.0007985   2124.000     0.000    EM
+     9 -0.21214181D+05    6.8309106    0.0003219   2124.000     0.000    EM
+    10 -0.21211620D+05    2.5613379    0.0001207   2124.000     0.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 7
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.11196889D+06    0.0000000    0.0000000   2124.000     0.000    EM
+     2 -0.22371123D+05 ************    0.8002023   2124.000     0.000    EM
+     3 -0.21962475D+05  408.6472530    0.0182667   2124.000     0.000    EM
+     4 -0.21714843D+05  247.6322396    0.0112752   2124.000     0.000    EM
+     5 -0.21524558D+05  190.2851330    0.0087629   2124.000     0.000    EM
+     6 -0.21385361D+05  139.1968748    0.0064669   2124.000     0.000    EM
+     7 -0.21295887D+05   89.4737339    0.0041839   2124.000     0.000    EM
+     8 -0.21246990D+05   48.8977808    0.0022961   2124.000     0.000    EM
+     9 -0.21224301D+05   22.6888742    0.0010679   2124.000     0.000    EM
+    10 -0.21215143D+05    9.1577387    0.0004315   2124.000     0.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 8
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.19849235D+06    0.0000000    0.0000000   1366.932   757.068    EM
+     2 -0.21244473D+05 ************    0.8929708      0.000  2124.000    EM
+     3 -0.20976067D+05  268.4057223    0.0126341      0.000  2124.000    EM
+     4 -0.20970498D+05    5.5694731    0.0002655      0.000  2124.000    EM
+     5 -0.20969088D+05    1.4095157    0.0000672      0.000  2124.000    EM
+     6 -0.20968758D+05    0.3299372    0.0000157      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 9
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.32634194D+06    0.0000000    0.0000000   1707.488   416.512    EM
+     2 -0.21599805D+05 ************    0.9338124      0.000  2124.000    EM
+     3 -0.21259596D+05  340.2085246    0.0157505      0.000  2124.000    EM
+     4 -0.21118470D+05  141.1264876    0.0066382      0.000  2124.000    EM
+     5 -0.21039513D+05   78.9566269    0.0037387      0.000  2124.000    EM
+     6 -0.20998994D+05   40.5194456    0.0019259      0.000  2124.000    EM
+     7 -0.20980679D+05   18.3143297    0.0008722      0.000  2124.000    EM
+     8 -0.20973251D+05    7.4282100    0.0003541      0.000  2124.000    EM
+     9 -0.20970443D+05    2.8081081    0.0001339      0.000  2124.000    EM
+    10 -0.20969412D+05    1.0309216    0.0000492      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 10
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.24923468D+06    0.0000000    0.0000000   1438.595   685.405    EM
+     2 -0.21286037D+05 ************    0.9145944   1431.255   692.745    EM
+     3 -0.21119910D+05  166.1270807    0.0078045   1424.061   699.939    EM
+     4 -0.21064537D+05   55.3730759    0.0026218   1416.328   707.672    EM
+     5 -0.21042348D+05   22.1890811    0.0010534   1407.615   716.385    EM
+     6 -0.21032212D+05   10.1357754    0.0004817   1397.834   726.166    EM
+     7 -0.21026163D+05    6.0491205    0.0002876   1387.251   736.749    EM
+     8 -0.21021428D+05    4.7348138    0.0002252   1376.375   747.625    EM
+     9 -0.21017258D+05    4.1706198    0.0001984   1365.709   758.291    EM
+    10 -0.21013523D+05    3.7345749    0.0001777   1355.563   768.437    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 11
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.27780223D+06    0.0000000    0.0000000    183.539  1940.461    EM
+     2 -0.21824521D+05 ************    0.9214386      0.000  2124.000    EM
+     3 -0.21448933D+05  375.5879579    0.0172094      0.000  2124.000    EM
+     4 -0.21249613D+05  199.3200330    0.0092928      0.000  2124.000    EM
+     5 -0.21118109D+05  131.5037012    0.0061885      0.000  2124.000    EM
+     6 -0.21038735D+05   79.3740412    0.0037586      0.000  2124.000    EM
+     7 -0.20997649D+05   41.0855874    0.0019529      0.000  2124.000    EM
+     8 -0.20979479D+05   18.1703494    0.0008654      0.000  2124.000    EM
+     9 -0.20972435D+05    7.0436312    0.0003357      0.000  2124.000    EM
+    10 -0.20969956D+05    2.4793290    0.0001182      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 12
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.49263405D+05    0.0000000    0.0000000   2082.772    41.228    EM
+     2 -0.21256816D+05 ************    0.5685070   2081.232    42.768    EM
+     3 -0.21206330D+05   50.4865259    0.0023751   2077.620    46.380    EM
+     4 -0.21192689D+05   13.6411803    0.0006433   2074.044    49.956    EM
+     5 -0.21187061D+05    5.6272463    0.0002655   2070.328    53.672    EM
+     6 -0.21183467D+05    3.5947614    0.0001697   2066.325    57.675    EM
+     7 -0.21180299D+05    3.1672200    0.0001495   2062.066    61.934    EM
+     8 -0.21177253D+05    3.0467901    0.0001439   2057.784    66.216    EM
+     9 -0.21174418D+05    2.8343981    0.0001338   2053.675    70.325    EM
+    10 -0.21171862D+05    2.5558175    0.0001207   2049.702    74.298    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 13
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.39243992D+06    0.0000000    0.0000000   1595.070   528.930    EM
+     2 -0.21425192D+05 ************    0.9454052      0.000  2124.000    EM
+     3 -0.21152489D+05  272.7028546    0.0127281      0.000  2124.000    EM
+     4 -0.21052415D+05  100.0739168    0.0047311      0.000  2124.000    EM
+     5 -0.21004376D+05   48.0389276    0.0022819      0.000  2124.000    EM
+     6 -0.20982875D+05   21.5010599    0.0010236      0.000  2124.000    EM
+     7 -0.20974115D+05    8.7604472    0.0004175      0.000  2124.000    EM
+     8 -0.20970779D+05    3.3358060    0.0001590      0.000  2124.000    EM
+     9 -0.20969546D+05    1.2331110    0.0000588      0.000  2124.000    EM
+    10 -0.20969086D+05    0.4595348    0.0000219      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 14
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.51564747D+06    0.0000000    0.0000000   1601.053   522.947    EM
+     2 -0.22351649D+05 ************    0.9566532      0.000  2124.000    EM
+     3 -0.21826055D+05  525.5944875    0.0235148      0.000  2124.000    EM
+     4 -0.21572538D+05  253.5168869    0.0116153      0.000  2124.000    EM
+     5 -0.21368511D+05  204.0265134    0.0094577      0.000  2124.000    EM
+     6 -0.21208906D+05  159.6054947    0.0074692      0.000  2124.000    EM
+     7 -0.21096868D+05  112.0382269    0.0052826      0.000  2124.000    EM
+     8 -0.21029027D+05   67.8411145    0.0032157      0.000  2124.000    EM
+     9 -0.20994064D+05   34.9627617    0.0016626      0.000  2124.000    EM
+    10 -0.20978517D+05   15.5470905    0.0007405      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 15
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.36724265D+06    0.0000000    0.0000000   1138.923   985.077    EM
+     2 -0.21320465D+05 ************    0.9419445      0.000  2124.000    EM
+     3 -0.21025541D+05  294.9236476    0.0138329      0.000  2124.000    EM
+     4 -0.20986992D+05   38.5485780    0.0018334      0.000  2124.000    EM
+     5 -0.20974331D+05   12.6612826    0.0006033      0.000  2124.000    EM
+     6 -0.20970300D+05    4.0309804    0.0001922      0.000  2124.000    EM
+     7 -0.20969108D+05    1.1922972    0.0000569      0.000  2124.000    EM
+     8 -0.20968795D+05    0.3132634    0.0000149      0.000  2124.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 16
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.80557534D+05    0.0000000    0.0000000   2124.000     0.000    EM
+     2 -0.22198296D+05 ************    0.7244417   2124.000     0.000    EM
+     3 -0.21809374D+05  388.9220272    0.0175204   2124.000     0.000    EM
+     4 -0.21585528D+05  223.8464125    0.0102638   2124.000     0.000    EM
+     5 -0.21425792D+05  159.7357754    0.0074001   2124.000     0.000    EM
+     6 -0.21319765D+05  106.0270224    0.0049486   2124.000     0.000    EM
+     7 -0.21258991D+05   60.7734076    0.0028506   2124.000     0.000    EM
+     8 -0.21229445D+05   29.5463045    0.0013898   2124.000     0.000    EM
+     9 -0.21217075D+05   12.3699113    0.0005827   2124.000     0.000    EM
+    10 -0.21212464D+05    4.6110420    0.0002173   2124.000     0.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 17
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.15016776D+06    0.0000000    0.0000000   2124.000     0.000    EM
+     2 -0.25093637D+05 ************    0.8328960   2124.000     0.000    EM
+     3 -0.24603292D+05  490.3445352    0.0195406   2124.000     0.000    EM
+     4 -0.24310762D+05  292.5307606    0.0118899   2124.000     0.000    EM
+     5 -0.24053806D+05  256.9552288    0.0105696   2124.000     0.000    EM
+     6 -0.23874200D+05  179.6066471    0.0074669   2124.000     0.000    EM
+     7 -0.23743495D+05  130.7049990    0.0054747   2124.000     0.000    EM
+     8 -0.23661359D+05   82.1356092    0.0034593   2124.000     0.000    EM
+     9 -0.23617357D+05   44.0025247    0.0018597   2124.000     0.000    EM
+    10 -0.23597401D+05   19.9551366    0.0008449   2124.000     0.000    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 18
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.12313813D+06    0.0000000    0.0000000   1531.615   592.385    EM
+     2 -0.24513451D+05 ************    0.8009272   1551.315   572.685    EM
+     3 -0.24127019D+05  386.4311449    0.0157640   1561.851   562.149    EM
+     4 -0.23910553D+05  216.4667186    0.0089720   1567.726   556.274    EM
+     5 -0.23757166D+05  153.3863396    0.0064150   1571.017   552.983    EM
+     6 -0.23653587D+05  103.5796976    0.0043599   1572.933   551.067    EM
+     7 -0.23594274D+05   59.3126949    0.0025076   1574.021   549.979    EM
+     8 -0.23564047D+05   30.2264632    0.0012811   1574.701   549.299    EM
+     9 -0.23550498D+05   13.5497015    0.0005750   1575.148   548.852    EM
+    10 -0.23544884D+05    5.6142274    0.0002384   1575.483   548.517    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 19
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.31082793D+06    0.0000000    0.0000000   1632.648   491.352    EM
+     2 -0.25248183D+05 ************    0.9187712   1625.903   498.097    EM
+     3 -0.24815223D+05  432.9595220    0.0171481   1621.998   502.002    EM
+     4 -0.24539213D+05  276.0103877    0.0111226   1619.859   504.141    EM
+     5 -0.24304806D+05  234.4065102    0.0095523   1618.743   505.257    EM
+     6 -0.24105677D+05  199.1289629    0.0081930   1618.225   505.775    EM
+     7 -0.23948580D+05  157.0971023    0.0065170   1618.048   505.952    EM
+     8 -0.23838807D+05  109.7733127    0.0045837   1618.088   505.912    EM
+     9 -0.23772753D+05   66.0537008    0.0027708   1618.281   505.719    EM
+    10 -0.23738849D+05   33.9038063    0.0014262   1618.549   505.451    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 20
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.33304112D+06    0.0000000    0.0000000   1367.401   756.599    EM
+     2 -0.23466517D+05 ************    0.9295387      0.000  2124.000    EM
+     3 -0.31823699D+05 ************   -0.3561322      0.000  2124.000    EM
+     4 -0.22933356D+05 8890.3427165    0.2793623      0.000  2124.000    EM
+     5 -0.22727589D+05  205.7677175    0.0089724      0.000  2124.000    EM
+     6 -0.22564808D+05  162.7811288    0.0071623      0.000  2124.000    EM
+     7 -0.22450110D+05  114.6979054    0.0050830      0.000  2124.000    EM
+     8 -0.22380584D+05   69.5259350    0.0030969      0.000  2124.000    EM
+     9 -0.22344796D+05   35.7879163    0.0015991      0.000  2124.000    EM
+    10 -0.22328454D+05   16.3421991    0.0007314      0.000  2124.000    EM
+
+
+  FINAL STAGE ITERATIONS
+
+
+  TECHNICAL 8 OUTPUT FOR UNPERTURBED STARTING VALUE SET
+
+
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.26492508D+05    0.0000000    0.0000000   1062.000  1062.000    EM
+     2 -0.21061554D+05 5430.9541120    0.2049996   1005.846  1118.154    EM
+     3 -0.20986167D+05   75.3870916    0.0035794    959.120  1164.880    EM
+     4 -0.20959566D+05   26.6011525    0.0012676    926.879  1197.121    EM
+     5 -0.20945566D+05   13.9991630    0.0006679    905.414  1218.586    EM
+     6 -0.20935701D+05    9.8649239    0.0004710    891.063  1232.937    EM
+     7 -0.20927936D+05    7.7658897    0.0003709    881.256  1242.744    EM
+     8 -0.20921710D+05    6.2255365    0.0002975    874.284  1249.716    EM
+     9 -0.20916771D+05    4.9390757    0.0002361    869.018  1254.982    EM
+    10 -0.20912906D+05    3.8653777    0.0001848    864.724  1259.276    EM
+    11 -0.20909907D+05    2.9985669    0.0001434    860.943  1263.057    EM
+    12 -0.20907587D+05    2.3197364    0.0001109    857.401  1266.599    EM
+    13 -0.20905789D+05    1.7981266    0.0000860    853.954  1270.046    EM
+    14 -0.20904389D+05    1.4005868    0.0000670    850.532  1273.468    EM
+    15 -0.20903291D+05    1.0977767    0.0000525    847.116  1276.884    EM
+    16 -0.20902425D+05    0.8662498    0.0000414    843.709  1280.291    EM
+    17 -0.20901736D+05    0.6881989    0.0000329    840.324  1283.676    EM
+    18 -0.20901186D+05    0.5503870    0.0000263    836.982  1287.018    EM
+    19 -0.20900743D+05    0.4430242    0.0000212    833.698  1290.302    EM
+    20 -0.20900384D+05    0.3588521    0.0000172    830.487  1293.513    EM
+    21 -0.20900092D+05    0.2924526    0.0000140    827.362  1296.638    EM
+    22 -0.20899852D+05    0.2397506    0.0000115    824.329  1299.671    EM
+    23 -0.20899654D+05    0.1976746    0.0000095    821.397  1302.603    EM
+    24 -0.20899490D+05    0.1638844    0.0000078    818.567  1305.433    EM
+    25 -0.20899354D+05    0.1365905    0.0000065    815.841  1308.159    EM
+    26 -0.20899239D+05    0.1144190    0.0000055    813.219  1310.781    EM
+    27 -0.20899143D+05    0.0963109    0.0000046    810.701  1313.299    EM
+    28 -0.20899062D+05    0.0814440    0.0000039    808.284  1315.716    EM
+    29 -0.20898992D+05    0.0691747    0.0000033    805.967  1318.033    EM
+    30 -0.20898933D+05    0.0590005    0.0000028    803.745  1320.255    EM
+    31 -0.20898883D+05    0.0505242    0.0000024    801.617  1322.383    EM
+    32 -0.20898839D+05    0.0434313    0.0000021    799.578  1324.422    EM
+    33 -0.20898802D+05    0.0374712    0.0000018    797.625  1326.375    EM
+    34 -0.20898770D+05    0.0324430    0.0000016    795.755  1328.245    EM
+    35 -0.20898741D+05    0.0281849    0.0000013    793.964  1330.036    EM
+    36 -0.20898524D+05    0.2171319    0.0000104    753.977  1370.023    FS
+    37 -0.20898514D+05    0.0097269    0.0000005    753.702  1370.298    EM
+    38 -0.20898515D+05   -0.0003080    0.0000000    753.468  1370.532    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 8
+
+
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.19849235D+06    0.0000000    0.0000000   1366.932   757.068    EM
+     2 -0.21244473D+05 ************    0.8929708      0.000  2124.000    EM
+     3 -0.20976067D+05  268.4057223    0.0126341      0.000  2124.000    EM
+     4 -0.20970498D+05    5.5694731    0.0002655      0.000  2124.000    EM
+     5 -0.20969088D+05    1.4095157    0.0000672      0.000  2124.000    EM
+     6 -0.20968758D+05    0.3299372    0.0000157      0.000  2124.000    EM
+     7 -0.20968706D+05    0.0524434    0.0000025      0.000  2124.000    EM
+     8 -0.20968716D+05   -0.0100384   -0.0000005      0.000  2124.000    EM
+     9 -0.20968733D+05   -0.0175400   -0.0000008      0.000  2124.000    EM
+    10 -0.20968747D+05   -0.0134449   -0.0000006      0.000  2124.000    EM
+    11 -0.20968756D+05   -0.0086250   -0.0000004      0.000  2124.000    EM
+
+
+SAMPLE STATISTICS FOR ESTIMATED FACTOR SCORES
+
+
+     SAMPLE STATISTICS
+
+
+           Means
+              TR            C_TR
+              ________      ________
+ 1              1.854         1.843
+
+
+           Covariances
+              TR            C_TR
+              ________      ________
+ TR             5.174
+ C_TR           5.181         5.198
+
+
+           Correlations
+              TR            C_TR
+              ________      ________
+ TR             1.000
+ C_TR           0.999         1.000
+
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    ess5ru_from_mplus.txt
+
+  Order and format of variables
+
+    TRSTPRL        F10.3
+    TRSTLGL        F10.3
+    TRSTPLC        F10.3
+    TRSTPLT        F10.3
+    TRSTPRT        F10.3
+    PARTYUR        F10.3
+    STFECON        F10.3
+    AGEA           F10.3
+    EDUSECON       F10.3
+    EDUPRIMA       F10.3
+    MALE           F10.3
+    WORKORG        F10.3
+    TRSTPPL        F10.3
+    POLINTR        F10.3
+    INTERNET       F10.3
+    VOTED          F10.3
+    TOWN           F10.3
+    VILG           F10.3
+    ID             I6
+    TR             F10.3
+    C_TR           F10.3
+    CPROB1         F10.3
+    CPROB2         F10.3
+    C              F10.3
+
+  Save file format
+    18F10.3 I6 5F10.3
+
+  Save file record length    10000
+
+
+     Beginning Time:  12:54:28
+        Ending Time:  12:56:40
+       Elapsed Time:  00:02:12
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2012 Muthen & Muthen

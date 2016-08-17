@@ -1,0 +1,434 @@
+Mplus VERSION 7.1 (Mac)
+MUTHEN & MUTHEN
+10/18/2013  12:24 PM
+
+INPUT INSTRUCTIONS
+
+  DATA: FILE IS essmplus.dat;
+
+  DEFINE:
+  If (agea GE 72) THEN stalin = 1 else stalin = 0;
+  If (agea GE 61 AND agea LT 72) THEN krus   = 1 else krus   = 0;
+  If (agea GE 41 AND agea LT 61) THEN brez   = 1 else brez   = 0;
+  If (agea GE 34 AND agea LT 41) THEN gorb   = 1 else gorb   = 0;
+  If (agea GE 25 AND agea LT 34) THEN jeltz  = 1 else jeltz  = 0;
+  if (agea LT 25) THEN put  = 1 else put  = 0;
+
+  if (partyru EQ 1) THEN partyur = 1 else partyur = 0;
+
+  if (towntype EQ 3) THEN town = 1 else town = 0;
+  if (towntype GT 3) THEN vilg = 1 else vilg = 0;
+
+
+  VARIABLE: NAMES ARE id agea trstprl trstlgl trstplc trstplt trstprt trstppl
+  contact polintr voted workpty demo closeprt mmbprt leftrig stflife stfecon
+  stfgov stfdem wrngins wrngbuy wrngtrf male edu prvsctr incdeci internet
+  workorg partyru towntype;
+
+  USEVARIABLES ARE !stfdem
+
+  stfecon
+
+  trstprl trstlgl trstplc trstplt trstprt
+  ;
+
+  MISSING ARE ALL (-99);
+
+  IDVAR = id;
+
+  ANALYSIS: ESTIMATOR=MLR;
+
+  MODEL:
+
+  tr by trstprl trstlgl trstplc trstplt trstprt;
+
+  tr on stfecon;
+
+  OUTPUT: STDYX TECH1 TECH8;
+
+
+
+
+*** WARNING in OUTPUT command
+  TECH8 option is available only with analysis types MIXTURE, RANDOM, or
+  TWOLEVEL with estimators ML, MLF, or MLR or ALGORITHM=INTEGRATION.
+  Request for TECH8 is ignored.
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  25
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  116
+*** WARNING
+  Data set contains cases with missing on all variables except
+  x-variables.  These cases were not included in the analysis.
+  Number of cases with missing on all variables except x-variables:  49
+   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        2405
+
+Number of dependent variables                                    5
+Number of independent variables                                  1
+Number of continuous latent variables                            1
+
+Observed dependent variables
+
+  Continuous
+   TRSTPRL     TRSTLGL     TRSTPLC     TRSTPLT     TRSTPRT
+
+Observed independent variables
+   STFECON
+
+Continuous latent variables
+   TR
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  essmplus.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            24
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.970
+ TRSTLGL        0.943         0.965
+ TRSTPLC        0.958         0.959         0.987
+ TRSTPLT        0.946         0.935         0.952         0.960
+ TRSTPRT        0.939         0.933         0.948         0.943         0.956
+ STFECON        0.970         0.965         0.987         0.960         0.956
+
+
+           Covariance Coverage
+              STFECON
+              ________
+ STFECON        1.000
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       16
+
+Loglikelihood
+
+          H0 Value                      -23114.398
+          H0 Scaling Correction Factor      1.7199
+            for MLR
+          H1 Value                      -22655.163
+          H1 Scaling Correction Factor      1.7681
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   46260.797
+          Bayesian (BIC)                 46353.362
+          Sample-Size Adjusted BIC       46302.526
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                            495.492*
+          Degrees of Freedom                     9
+          P-Value                           0.0000
+          Scaling Correction Factor         1.8537
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.150
+          90 Percent C.I.                    0.139  0.161
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.890
+          TLI                                0.816
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           4426.311
+          Degrees of Freedom                    15
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.043
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ TR       BY
+    TRSTPRL            1.000      0.000    999.000    999.000
+    TRSTLGL            0.905      0.018     51.021      0.000
+    TRSTPLC            0.880      0.018     48.507      0.000
+    TRSTPLT            1.001      0.018     54.232      0.000
+    TRSTPRT            0.969      0.020     47.806      0.000
+
+ TR       ON
+    STFECON            0.470      0.022     20.921      0.000
+
+ Intercepts
+    TRSTPRL            1.834      0.090     20.341      0.000
+    TRSTLGL            2.213      0.091     24.335      0.000
+    TRSTPLC            1.984      0.088     22.590      0.000
+    TRSTPLT            1.371      0.082     16.717      0.000
+    TRSTPRT            1.435      0.082     17.476      0.000
+
+ Residual Variances
+    TRSTPRL            1.957      0.122     16.017      0.000
+    TRSTLGL            3.023      0.191     15.863      0.000
+    TRSTPLC            3.189      0.178     17.962      0.000
+    TRSTPLT            0.850      0.094      9.012      0.000
+    TRSTPRT            1.216      0.130      9.375      0.000
+    TR                 4.401      0.164     26.889      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ TR       BY
+    TRSTPRL            0.860      0.009     91.347      0.000
+    TRSTLGL            0.775      0.016     48.381      0.000
+    TRSTPLC            0.758      0.015     49.904      0.000
+    TRSTPLT            0.931      0.008    115.968      0.000
+    TRSTPRT            0.900      0.011     80.313      0.000
+
+ TR       ON
+    STFECON            0.454      0.019     23.633      0.000
+
+ Intercepts
+    TRSTPRL            0.670      0.035     19.199      0.000
+    TRSTLGL            0.804      0.035     22.834      0.000
+    TRSTPLC            0.725      0.034     21.469      0.000
+    TRSTPLT            0.542      0.034     16.016      0.000
+    TRSTPRT            0.566      0.034     16.687      0.000
+
+ Residual Variances
+    TRSTPRL            0.261      0.016     16.127      0.000
+    TRSTLGL            0.400      0.025     16.094      0.000
+    TRSTPLC            0.426      0.023     18.526      0.000
+    TRSTPLT            0.133      0.015      8.877      0.000
+    TRSTPRT            0.189      0.020      9.386      0.000
+    TR                 0.794      0.017     45.540      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TRSTPRL            0.739      0.016     45.674      0.000
+    TRSTLGL            0.600      0.025     24.190      0.000
+    TRSTPLC            0.574      0.023     24.952      0.000
+    TRSTPLT            0.867      0.015     57.984      0.000
+    TRSTPRT            0.811      0.020     40.157      0.000
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    TR                 0.206      0.017     11.816      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.160E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+      1           1             2             3             4             5
+
+
+           NU
+              STFECON
+              ________
+      1           0
+
+
+           LAMBDA
+              TR            STFECON
+              ________      ________
+ TRSTPRL            0             0
+ TRSTLGL            6             0
+ TRSTPLC            7             0
+ TRSTPLT            8             0
+ TRSTPRT            9             0
+ STFECON            0             0
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL           10
+ TRSTLGL            0            11
+ TRSTPLC            0             0            12
+ TRSTPLT            0             0             0            13
+ TRSTPRT            0             0             0             0            14
+ STFECON            0             0             0             0             0
+
+
+           THETA
+              STFECON
+              ________
+ STFECON            0
+
+
+           ALPHA
+              TR            STFECON
+              ________      ________
+      1           0             0
+
+
+           BETA
+              TR            STFECON
+              ________      ________
+ TR                 0            15
+ STFECON            0             0
+
+
+           PSI
+              TR            STFECON
+              ________      ________
+ TR                16
+ STFECON            0             0
+
+
+     STARTING VALUES
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+      1         3.551         3.776         3.504         3.081         3.094
+
+
+           NU
+              STFECON
+              ________
+      1         0.000
+
+
+           LAMBDA
+              TR            STFECON
+              ________      ________
+ TRSTPRL        1.000         0.000
+ TRSTLGL        0.926         0.000
+ TRSTPLC        0.925         0.000
+ TRSTPLT        0.975         0.000
+ TRSTPRT        0.944         0.000
+ STFECON        0.000         1.000
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        3.746
+ TRSTLGL        0.000         3.773
+ TRSTPLC        0.000         0.000         3.740
+ TRSTPLT        0.000         0.000         0.000         3.205
+ TRSTPRT        0.000         0.000         0.000         0.000         3.208
+ STFECON        0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              STFECON
+              ________
+ STFECON        0.000
+
+
+           ALPHA
+              TR            STFECON
+              ________      ________
+      1         0.000         3.670
+
+
+           BETA
+              TR            STFECON
+              ________      ________
+ TR             0.000         0.000
+ STFECON        0.000         0.000
+
+
+           PSI
+              TR            STFECON
+              ________      ________
+ TR             0.050
+ STFECON        0.000         5.161
+
+
+     Beginning Time:  12:24:29
+        Ending Time:  12:24:29
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2013 Muthen & Muthen

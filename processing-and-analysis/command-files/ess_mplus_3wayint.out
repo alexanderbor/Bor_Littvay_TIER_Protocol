@@ -1,0 +1,2572 @@
+Mplus VERSION 7.4
+MUTHEN & MUTHEN
+07/20/2016   2:11 PM
+
+INPUT INSTRUCTIONS
+
+  DATA: FILE IS datamplus.dat;
+
+  DEFINE:
+  If (agea GE 72) THEN stalin = 1 else stalin = 0;
+  If (agea GE 61 AND agea LT 72) THEN krus   = 1 else krus   = 0;
+  If (agea GE 41 AND agea LT 61) THEN brez   = 1 else brez   = 0;
+  If (agea GE 34 AND agea LT 41) THEN gorb   = 1 else gorb   = 0;
+  If (agea GE 25 AND agea LT 34) THEN jeltz  = 1 else jeltz  = 0;
+  if (agea LT 25) THEN put  = 1 else put  = 0;
+
+  edu = 2-(edusecon+eduprima);
+  city = 2-(town+vilg);
+  if (agea LE 35) THEN agegr = 1 else agegr = 0;
+  ec = edu*city;
+  ea = edu*agegr;
+  ca = city*agegr;
+  eca = city*agegr+edu;
+
+  !edu city agegr ec ea ca eca;
+
+  VARIABLE: NAMES ARE r id stfecon trstprl trstlgl trstplc trstplt trstprt trstppl
+  agea polintr edusecon eduprima male workorg internet voted partyur votedur town
+  vilg;
+
+  USEVARIABLES ARE
+  !stfdem
+  stfecon
+  trstprl trstlgl trstplc trstplt trstprt
+
+  male workorg
+  trstppl polintr internet voted
+
+  !votedur
+  partyur
+  edu city agegr ec ea ca eca;
+
+  MISSING ARE ALL (99);
+
+  IDVAR = id;
+
+  CLASSES = c(2);
+
+  ANALYSIS: TYPE = MIXTURE;
+  STARTS = 300 30;
+  PROCESSORS = 15;
+  ALGORITHM=INTEGRATION;
+  INTEGRATION=MONTECARLO;
+
+  MODEL:
+
+  %OVERALL%
+
+  tr by trstprl trstlgl trstplc trstplt trstprt;
+
+  tr on stfecon;
+
+  c on edu city agegr ec ea ca eca stfecon male workorg trstppl polintr
+  internet voted
+  !votedur
+  partyur
+  ;
+
+  !votedur;
+  partyur;
+
+  %c#1%
+
+  tr on stfecon@0;
+  !tr on stfecon;
+
+  OUTPUT: STDYX TECH1 TECH8;
+
+  !SAVEDATA: FILE IS newoutpartyur2.txt; SAVE=CPROBABILITIES; SAVE=FSCORES;
+
+
+
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  438
+*** WARNING
+  Data set contains cases with missing on all variables except
+  x-variables.  These cases were not included in the analysis.
+  Number of cases with missing on all variables except x-variables:  33
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        2124
+
+Number of dependent variables                                    5
+Number of independent variables                                 15
+Number of continuous latent variables                            1
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Continuous
+   TRSTPRL     TRSTLGL     TRSTPLC     TRSTPLT     TRSTPRT
+
+Observed independent variables
+   STFECON     MALE        WORKORG     TRSTPPL     POLINTR     INTERNET
+   VOTED       PARTYUR     EDU         CITY        AGEGR       EC
+   EA          CA          ECA
+
+Continuous latent variables
+   TR
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                  MONTECARLO
+  Number of integration points                                 250
+  Dimensions of numerical integration                            1
+  Adaptive quadrature                                           ON
+  Monte Carlo integration seed                                   0
+Random Starts Specifications
+  Number of initial stage random starts                        300
+  Number of final stage optimizations                           30
+  Number of initial stage iterations                            10
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                       0
+Cholesky                                                       OFF
+
+Input data file(s)
+  datamplus.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            44
+     Number of y missing data patterns          44
+     Number of u missing data patterns           0
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.973
+ TRSTLGL        0.948         0.966
+ TRSTPLC        0.959         0.959         0.983
+ TRSTPLT        0.948         0.937         0.952         0.961
+ TRSTPRT        0.943         0.934         0.947         0.943         0.956
+ PARTYUR        0.434         0.432         0.441         0.430         0.429
+ STFECON        0.973         0.966         0.983         0.961         0.956
+ MALE           0.973         0.966         0.983         0.961         0.956
+ WORKORG        0.973         0.966         0.983         0.961         0.956
+ TRSTPPL        0.973         0.966         0.983         0.961         0.956
+ POLINTR        0.973         0.966         0.983         0.961         0.956
+ INTERNET       0.973         0.966         0.983         0.961         0.956
+ VOTED          0.973         0.966         0.983         0.961         0.956
+ EDU            0.973         0.966         0.983         0.961         0.956
+ CITY           0.973         0.966         0.983         0.961         0.956
+ AGEGR          0.973         0.966         0.983         0.961         0.956
+ EC             0.973         0.966         0.983         0.961         0.956
+ EA             0.973         0.966         0.983         0.961         0.956
+ CA             0.973         0.966         0.983         0.961         0.956
+ ECA            0.973         0.966         0.983         0.961         0.956
+
+
+           Covariance Coverage
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ PARTYUR        0.447
+ STFECON        0.447         1.000
+ MALE           0.447         1.000         1.000
+ WORKORG        0.447         1.000         1.000         1.000
+ TRSTPPL        0.447         1.000         1.000         1.000         1.000
+ POLINTR        0.447         1.000         1.000         1.000         1.000
+ INTERNET       0.447         1.000         1.000         1.000         1.000
+ VOTED          0.447         1.000         1.000         1.000         1.000
+ EDU            0.447         1.000         1.000         1.000         1.000
+ CITY           0.447         1.000         1.000         1.000         1.000
+ AGEGR          0.447         1.000         1.000         1.000         1.000
+ EC             0.447         1.000         1.000         1.000         1.000
+ EA             0.447         1.000         1.000         1.000         1.000
+ CA             0.447         1.000         1.000         1.000         1.000
+ ECA            0.447         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ POLINTR        1.000
+ INTERNET       1.000         1.000
+ VOTED          1.000         1.000         1.000
+ EDU            1.000         1.000         1.000         1.000
+ CITY           1.000         1.000         1.000         1.000         1.000
+ AGEGR          1.000         1.000         1.000         1.000         1.000
+ EC             1.000         1.000         1.000         1.000         1.000
+ EA             1.000         1.000         1.000         1.000         1.000
+ CA             1.000         1.000         1.000         1.000         1.000
+ ECA            1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ AGEGR          1.000
+ EC             1.000         1.000
+ EA             1.000         1.000         1.000
+ CA             1.000         1.000         1.000         1.000
+ ECA            1.000         1.000         1.000         1.000         1.000
+
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+          -20825.745  49221            254
+          -20825.746  533738           11
+          -20825.746  170954           86
+          -20825.746  352277           42
+          -20825.746  303634           169
+          -20825.746  788796           145
+          -20825.746  437181           135
+          -20825.746  997222           229
+          -20825.747  939709           112
+          -20825.747  626891           32
+          -20825.747  399848           220
+          -20825.747  902278           21
+          -20825.747  354208           196
+          -20825.747  931874           141
+          -20825.747  232559           136
+          -20825.747  73576            213
+          -20825.747  436460           89
+          -20825.747  464179           106
+          -20898.094  551639           55
+          -20903.195  105435           265
+          -20903.198  297518           166
+          -20903.199  220454           288
+          -20903.201  824126           287
+          -20903.202  195353           225
+          -20903.202  496881           192
+          -20903.203  576726           280
+          -20903.205  unperturbed      0
+          -20903.206  691234           250
+          -20952.807  467339           66
+          -20959.308  784664           75
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+
+     WARNING:  THE SAMPLE COVARIANCE OF THE INDEPENDENT VARIABLES
+     IN CLASS 1 IS SINGULAR.
+
+     ONE OR MORE MULTINOMIAL LOGIT PARAMETERS WERE FIXED TO AVOID SINGULARITY
+     OF THE INFORMATION MATRIX.  THE SINGULARITY IS MOST LIKELY BECAUSE THE
+     MODEL IS NOT IDENTIFIED, OR BECAUSE OF EMPTY CELLS IN THE JOINT
+     DISTRIBUTION OF THE CATEGORICAL LATENT VARIABLES AND ANY INDEPENDENT
+     VARIABLES.  THE FOLLOWING PARAMETERS WERE FIXED:
+     Parameter 35, C#1 ON ECA
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     ERROR OCCURRED WHILE COMPUTING THE STANDARD ERRORS FOR THE
+     STANDARDIZED COEFFICIENT.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       35
+
+Loglikelihood
+
+          H0 Value                      -20825.745
+          H0 Scaling Correction Factor      1.2908
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41721.491
+          Bayesian (BIC)                 41919.628
+          Sample-Size Adjusted BIC       41808.429
+            (n* = (n + 2) / 24)
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1        389.99551          0.18361
+       2       1734.00449          0.81639
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1        388.83891          0.18307
+       2       1735.16109          0.81693
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1              345          0.16243
+       2             1779          0.83757
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.752
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2
+
+    1   0.837    0.163
+    2   0.056    0.944
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2
+
+    1   0.743    0.257
+    2   0.032    0.968
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2
+
+    1      1.062    0.000
+    2     -3.399    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ TR       BY
+    TRSTPRL            1.000      0.000    999.000    999.000
+    TRSTLGL            0.908      0.018     49.534      0.000
+    TRSTPLC            0.887      0.019     46.494      0.000
+    TRSTPLT            0.997      0.021     48.614      0.000
+    TRSTPRT            0.967      0.022     43.715      0.000
+
+ TR         ON
+    STFECON            0.000      0.000    999.000    999.000
+
+ Means
+    PARTYUR            0.614      0.016     38.433      0.000
+
+ Intercepts
+    TRSTPRL            1.679      0.087     19.253      0.000
+    TRSTLGL            2.015      0.089     22.576      0.000
+    TRSTPLC            1.837      0.087     21.177      0.000
+    TRSTPLT            1.233      0.080     15.485      0.000
+    TRSTPRT            1.306      0.081     16.174      0.000
+    TR                 5.390      0.244     22.102      0.000
+
+ Variances
+    PARTYUR            0.235      0.004     62.103      0.000
+
+ Residual Variances
+    TRSTPRL            1.932      0.131     14.703      0.000
+    TRSTLGL            2.871      0.195     14.748      0.000
+    TRSTPLC            3.109      0.191     16.309      0.000
+    TRSTPLT            0.865      0.104      8.336      0.000
+    TRSTPRT            1.207      0.137      8.841      0.000
+    TR                 2.307      0.110     20.925      0.000
+
+Latent Class 2
+
+ TR       BY
+    TRSTPRL            1.000      0.000    999.000    999.000
+    TRSTLGL            0.908      0.018     49.534      0.000
+    TRSTPLC            0.887      0.019     46.494      0.000
+    TRSTPLT            0.997      0.021     48.614      0.000
+    TRSTPRT            0.967      0.022     43.715      0.000
+
+ TR         ON
+    STFECON            0.321      0.026     12.404      0.000
+
+ Means
+    PARTYUR            0.614      0.016     38.433      0.000
+
+ Intercepts
+    TRSTPRL            1.679      0.087     19.253      0.000
+    TRSTLGL            2.015      0.089     22.576      0.000
+    TRSTPLC            1.837      0.087     21.177      0.000
+    TRSTPLT            1.233      0.080     15.485      0.000
+    TRSTPRT            1.306      0.081     16.174      0.000
+    TR                 0.000      0.000    999.000    999.000
+
+ Variances
+    PARTYUR            0.235      0.004     62.103      0.000
+
+ Residual Variances
+    TRSTPRL            1.932      0.131     14.703      0.000
+    TRSTLGL            2.871      0.195     14.748      0.000
+    TRSTPLC            3.109      0.191     16.309      0.000
+    TRSTPLT            0.865      0.104      8.336      0.000
+    TRSTPRT            1.207      0.137      8.841      0.000
+    TR                 2.307      0.110     20.925      0.000
+
+Categorical Latent Variables
+
+ C#1        ON
+    EDU                1.130      0.553      2.043      0.041
+    CITY              -0.274      0.587     -0.467      0.641
+    AGEGR             -0.853      0.842     -1.013      0.311
+    EC                 0.253      0.358      0.708      0.479
+    EA                 0.548      0.402      1.361      0.173
+    CA                 1.608      0.395      4.068      0.000
+    ECA               -1.887      0.000    999.000    999.000
+    STFECON            0.369      0.046      7.969      0.000
+    MALE              -0.347      0.184     -1.885      0.059
+    WORKORG            0.354      0.327      1.082      0.279
+    TRSTPPL            0.151      0.036      4.190      0.000
+    POLINTR            0.680      0.183      3.716      0.000
+    INTERNET           0.032      0.202      0.157      0.875
+    VOTED              1.017      0.252      4.040      0.000
+    PARTYUR            0.789      0.259      3.050      0.002
+
+ Intercepts
+    C#1               -4.199      0.960     -4.376      0.000
+
+
+LOGISTIC REGRESSION ODDS RATIO RESULTS
+
+Categorical Latent Variables
+
+ C#1      ON
+    EDU                3.097
+    CITY               0.760
+    AGEGR              0.426
+    EC                 1.288
+    EA                 1.730
+    CA                 4.992
+    ECA                0.152
+    STFECON            1.446
+    MALE               0.707
+    WORKORG            1.425
+    TRSTPPL            1.163
+    POLINTR            1.974
+    INTERNET           1.032
+    VOTED              2.765
+    PARTYUR            2.200
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.139E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 1
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1                  1             2             3             4             5
+
+
+           NU
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            6             0             0             0             0
+ TRSTPLC            7             0             0             0             0
+ TRSTPLT            8             0             0             0             0
+ TRSTPRT            9             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              ECA
+              ________
+ TRSTPRL            0
+ TRSTLGL            0
+ TRSTPLC            0
+ TRSTPLT            0
+ TRSTPRT            0
+ PARTYUR            0
+ STFECON            0
+ MALE               0
+ WORKORG            0
+ TRSTPPL            0
+ POLINTR            0
+ INTERNET           0
+ VOTED              0
+ EDU                0
+ CITY               0
+ AGEGR              0
+ EC                 0
+ EA                 0
+ CA                 0
+ ECA                0
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL           10
+ TRSTLGL            0            11
+ TRSTPLC            0             0            12
+ TRSTPLT            0             0             0            13
+ TRSTPRT            0             0             0             0            14
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ PARTYUR            0
+ STFECON            0             0
+ MALE               0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ POLINTR            0
+ INTERNET           0             0
+ VOTED              0             0             0
+ EDU                0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ AGEGR              0
+ EC                 0             0
+ EA                 0             0             0
+ CA                 0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ 1                 15            16             0             0             0
+
+
+           ALPHA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              ECA
+              ________
+ 1                  0
+
+
+           BETA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              ECA
+              ________
+ TR                 0
+ PARTYUR            0
+ STFECON            0
+ MALE               0
+ WORKORG            0
+ TRSTPPL            0
+ POLINTR            0
+ INTERNET           0
+ VOTED              0
+ EDU                0
+ CITY               0
+ AGEGR              0
+ EC                 0
+ EA                 0
+ CA                 0
+ ECA                0
+
+
+           PSI
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR                17
+ PARTYUR            0            18
+ STFECON            0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPPL            0
+ POLINTR            0             0
+ INTERNET           0             0             0
+ VOTED              0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ CITY               0
+ AGEGR              0             0
+ EC                 0             0             0
+ EA                 0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              ECA
+              ________
+ ECA                0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 2
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1                  1             2             3             4             5
+
+
+           NU
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            6             0             0             0             0
+ TRSTPLC            7             0             0             0             0
+ TRSTPLT            8             0             0             0             0
+ TRSTPRT            9             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TRSTPRL            0             0             0             0             0
+ TRSTLGL            0             0             0             0             0
+ TRSTPLC            0             0             0             0             0
+ TRSTPLT            0             0             0             0             0
+ TRSTPRT            0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           LAMBDA
+              ECA
+              ________
+ TRSTPRL            0
+ TRSTLGL            0
+ TRSTPLC            0
+ TRSTPLT            0
+ TRSTPRT            0
+ PARTYUR            0
+ STFECON            0
+ MALE               0
+ WORKORG            0
+ TRSTPPL            0
+ POLINTR            0
+ INTERNET           0
+ VOTED              0
+ EDU                0
+ CITY               0
+ AGEGR              0
+ EC                 0
+ EA                 0
+ CA                 0
+ ECA                0
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL           10
+ TRSTLGL            0            11
+ TRSTPLC            0             0            12
+ TRSTPLT            0             0             0            13
+ TRSTPRT            0             0             0             0            14
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ PARTYUR            0
+ STFECON            0             0
+ MALE               0             0             0
+ WORKORG            0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ POLINTR            0
+ INTERNET           0             0
+ VOTED              0             0             0
+ EDU                0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           THETA
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ AGEGR              0
+ EC                 0             0
+ EA                 0             0             0
+ CA                 0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ 1                  0            16             0             0             0
+
+
+           ALPHA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              ECA
+              ________
+ 1                  0
+
+
+           BETA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR                 0             0            19             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TR                 0             0             0             0             0
+ PARTYUR            0             0             0             0             0
+ STFECON            0             0             0             0             0
+ MALE               0             0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           BETA
+              ECA
+              ________
+ TR                 0
+ PARTYUR            0
+ STFECON            0
+ MALE               0
+ WORKORG            0
+ TRSTPPL            0
+ POLINTR            0
+ INTERNET           0
+ VOTED              0
+ EDU                0
+ CITY               0
+ AGEGR              0
+ EC                 0
+ EA                 0
+ CA                 0
+ ECA                0
+
+
+           PSI
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR                17
+ PARTYUR            0            18
+ STFECON            0             0             0
+ MALE               0             0             0             0
+ WORKORG            0             0             0             0             0
+ TRSTPPL            0             0             0             0             0
+ POLINTR            0             0             0             0             0
+ INTERNET           0             0             0             0             0
+ VOTED              0             0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPPL            0
+ POLINTR            0             0
+ INTERNET           0             0             0
+ VOTED              0             0             0             0
+ EDU                0             0             0             0             0
+ CITY               0             0             0             0             0
+ AGEGR              0             0             0             0             0
+ EC                 0             0             0             0             0
+ EA                 0             0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ CITY               0
+ AGEGR              0             0
+ EC                 0             0             0
+ EA                 0             0             0             0
+ CA                 0             0             0             0             0
+ ECA                0             0             0             0             0
+
+
+           PSI
+              ECA
+              ________
+ ECA                0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+ 1                 20             0
+
+
+           GAMMA(C)
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ C#1                0            21            22            23            24
+ C#2                0             0             0             0             0
+
+
+           GAMMA(C)
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ C#1               25            26            27            28            29
+ C#2                0             0             0             0             0
+
+
+           GAMMA(C)
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ C#1               30            31            32            33            34
+ C#2                0             0             0             0             0
+
+
+           GAMMA(C)
+              ECA
+              ________
+ C#1               35
+ C#2                0
+
+
+     STARTING VALUES FOR LATENT CLASS 1
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1              3.518         3.698         3.473         3.058         3.078
+
+
+           NU
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TRSTPRL        1.000         0.000         0.000         0.000         0.000
+ TRSTLGL        1.000         0.000         0.000         0.000         0.000
+ TRSTPLC        1.000         0.000         0.000         0.000         0.000
+ TRSTPLT        1.000         0.000         0.000         0.000         0.000
+ TRSTPRT        1.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         1.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         1.000         0.000         0.000
+ MALE           0.000         0.000         0.000         1.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         1.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        1.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         1.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         1.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         1.000         0.000
+ EDU            0.000         0.000         0.000         0.000         1.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           1.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         1.000         0.000         0.000         0.000
+ EC             0.000         0.000         1.000         0.000         0.000
+ EA             0.000         0.000         0.000         1.000         0.000
+ CA             0.000         0.000         0.000         0.000         1.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ECA
+              ________
+ TRSTPRL        0.000
+ TRSTLGL        0.000
+ TRSTPLC        0.000
+ TRSTPLT        0.000
+ TRSTPRT        0.000
+ PARTYUR        0.000
+ STFECON        0.000
+ MALE           0.000
+ WORKORG        0.000
+ TRSTPPL        0.000
+ POLINTR        0.000
+ INTERNET       0.000
+ VOTED          0.000
+ EDU            0.000
+ CITY           0.000
+ AGEGR          0.000
+ EC             0.000
+ EA             0.000
+ CA             0.000
+ ECA            1.000
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        3.724
+ TRSTLGL        0.000         3.709
+ TRSTPLC        0.000         0.000         3.722
+ TRSTPLT        0.000         0.000         0.000         3.173
+ TRSTPRT        0.000         0.000         0.000         0.000         3.175
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ PARTYUR        0.000
+ STFECON        0.000         0.000
+ MALE           0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ POLINTR        0.000
+ INTERNET       0.000         0.000
+ VOTED          0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ AGEGR          0.000
+ EC             0.000         0.000
+ EA             0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ 1              0.000         0.620         0.000         0.000         0.000
+
+
+           ALPHA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              ECA
+              ________
+ 1              0.000
+
+
+           BETA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ECA
+              ________
+ TR             0.000
+ PARTYUR        0.000
+ STFECON        0.000
+ MALE           0.000
+ WORKORG        0.000
+ TRSTPPL        0.000
+ POLINTR        0.000
+ INTERNET       0.000
+ VOTED          0.000
+ EDU            0.000
+ CITY           0.000
+ AGEGR          0.000
+ EC             0.000
+ EA             0.000
+ CA             0.000
+ ECA            0.000
+
+
+           PSI
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR             0.050
+ PARTYUR        0.000         0.118
+ STFECON        0.000         0.000         2.566
+ MALE           0.000         0.000         0.000         0.121
+ WORKORG        0.000         0.000         0.000         0.000         0.021
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPPL        3.332
+ POLINTR        0.000         0.125
+ INTERNET       0.000         0.000         0.112
+ VOTED          0.000         0.000         0.000         0.106
+ EDU            0.000         0.000         0.000         0.000         0.123
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ CITY           0.123
+ AGEGR          0.000         0.104
+ EC             0.000         0.000         0.658
+ EA             0.000         0.000         0.000         0.312
+ CA             0.000         0.000         0.000         0.000         0.277
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ECA
+              ________
+ ECA            0.438
+
+
+     STARTING VALUES FOR LATENT CLASS 2
+
+
+           NU
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ 1              3.518         3.698         3.473         3.058         3.078
+
+
+           NU
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TRSTPRL        1.000         0.000         0.000         0.000         0.000
+ TRSTLGL        1.000         0.000         0.000         0.000         0.000
+ TRSTPLC        1.000         0.000         0.000         0.000         0.000
+ TRSTPLT        1.000         0.000         0.000         0.000         0.000
+ TRSTPRT        1.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         1.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         1.000         0.000         0.000
+ MALE           0.000         0.000         0.000         1.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         1.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        1.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         1.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         1.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         1.000         0.000
+ EDU            0.000         0.000         0.000         0.000         1.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TRSTPRL        0.000         0.000         0.000         0.000         0.000
+ TRSTLGL        0.000         0.000         0.000         0.000         0.000
+ TRSTPLC        0.000         0.000         0.000         0.000         0.000
+ TRSTPLT        0.000         0.000         0.000         0.000         0.000
+ TRSTPRT        0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           1.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         1.000         0.000         0.000         0.000
+ EC             0.000         0.000         1.000         0.000         0.000
+ EA             0.000         0.000         0.000         1.000         0.000
+ CA             0.000         0.000         0.000         0.000         1.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ECA
+              ________
+ TRSTPRL        0.000
+ TRSTLGL        0.000
+ TRSTPLC        0.000
+ TRSTPLT        0.000
+ TRSTPRT        0.000
+ PARTYUR        0.000
+ STFECON        0.000
+ MALE           0.000
+ WORKORG        0.000
+ TRSTPPL        0.000
+ POLINTR        0.000
+ INTERNET       0.000
+ VOTED          0.000
+ EDU            0.000
+ CITY           0.000
+ AGEGR          0.000
+ EC             0.000
+ EA             0.000
+ CA             0.000
+ ECA            1.000
+
+
+           THETA
+              TRSTPRL       TRSTLGL       TRSTPLC       TRSTPLT       TRSTPRT
+              ________      ________      ________      ________      ________
+ TRSTPRL        3.724
+ TRSTLGL        0.000         3.709
+ TRSTPLC        0.000         0.000         3.722
+ TRSTPLT        0.000         0.000         0.000         3.173
+ TRSTPRT        0.000         0.000         0.000         0.000         3.175
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PARTYUR       STFECON       MALE          WORKORG       TRSTPPL
+              ________      ________      ________      ________      ________
+ PARTYUR        0.000
+ STFECON        0.000         0.000
+ MALE           0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              POLINTR       INTERNET      VOTED         EDU           CITY
+              ________      ________      ________      ________      ________
+ POLINTR        0.000
+ INTERNET       0.000         0.000
+ VOTED          0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              AGEGR         EC            EA            CA            ECA
+              ________      ________      ________      ________      ________
+ AGEGR          0.000
+ EC             0.000         0.000
+ EA             0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ 1              0.000         0.620         0.000         0.000         0.000
+
+
+           ALPHA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              ECA
+              ________
+ 1              0.000
+
+
+           BETA
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ TR             0.000         0.000         0.000         0.000         0.000
+ PARTYUR        0.000         0.000         0.000         0.000         0.000
+ STFECON        0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ WORKORG        0.000         0.000         0.000         0.000         0.000
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ECA
+              ________
+ TR             0.000
+ PARTYUR        0.000
+ STFECON        0.000
+ MALE           0.000
+ WORKORG        0.000
+ TRSTPPL        0.000
+ POLINTR        0.000
+ INTERNET       0.000
+ VOTED          0.000
+ EDU            0.000
+ CITY           0.000
+ AGEGR          0.000
+ EC             0.000
+ EA             0.000
+ CA             0.000
+ ECA            0.000
+
+
+           PSI
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ TR             0.050
+ PARTYUR        0.000         0.118
+ STFECON        0.000         0.000         2.566
+ MALE           0.000         0.000         0.000         0.121
+ WORKORG        0.000         0.000         0.000         0.000         0.021
+ TRSTPPL        0.000         0.000         0.000         0.000         0.000
+ POLINTR        0.000         0.000         0.000         0.000         0.000
+ INTERNET       0.000         0.000         0.000         0.000         0.000
+ VOTED          0.000         0.000         0.000         0.000         0.000
+ EDU            0.000         0.000         0.000         0.000         0.000
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ TRSTPPL        3.332
+ POLINTR        0.000         0.125
+ INTERNET       0.000         0.000         0.112
+ VOTED          0.000         0.000         0.000         0.106
+ EDU            0.000         0.000         0.000         0.000         0.123
+ CITY           0.000         0.000         0.000         0.000         0.000
+ AGEGR          0.000         0.000         0.000         0.000         0.000
+ EC             0.000         0.000         0.000         0.000         0.000
+ EA             0.000         0.000         0.000         0.000         0.000
+ CA             0.000         0.000         0.000         0.000         0.000
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ CITY           0.123
+ AGEGR          0.000         0.104
+ EC             0.000         0.000         0.658
+ EA             0.000         0.000         0.000         0.312
+ CA             0.000         0.000         0.000         0.000         0.277
+ ECA            0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ECA
+              ________
+ ECA            0.438
+
+
+     STARTING VALUES FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+ 1              0.000         0.000
+
+
+           GAMMA(C)
+              TR            PARTYUR       STFECON       MALE          WORKORG
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+
+
+           GAMMA(C)
+              TRSTPPL       POLINTR       INTERNET      VOTED         EDU
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+
+
+           GAMMA(C)
+              CITY          AGEGR         EC            EA            CA
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+
+
+           GAMMA(C)
+              ECA
+              ________
+ C#1            0.000
+ C#2            0.000
+
+
+TECHNICAL 8 OUTPUT
+
+
+  INITIAL STAGE ITERATIONS
+
+
+  TECHNICAL 8 OUTPUT FOR UNPERTURBED STARTING VALUE SET
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.26495042D+05    0.0000000    0.0000000   1062.000  1062.000    EM
+     2 -0.21061833D+05 5433.2088116    0.2050651   1005.846  1118.154    EM
+     3 -0.20986694D+05   75.1391221    0.0035675    958.930  1165.070    EM
+     4 -0.20960618D+05   26.0766673    0.0012425    926.168  1197.832    EM
+     5 -0.20947236D+05   13.3820395    0.0006384    903.883  1220.117    EM
+     6 -0.20937980D+05    9.2558249    0.0004419    888.530  1235.470    EM
+     7 -0.20930760D+05    7.2193124    0.0003448    877.664  1246.336    EM
+     8 -0.20924996D+05    5.7648500    0.0002754    869.650  1254.350    EM
+     9 -0.20920430D+05    4.5659512    0.0002182    863.418  1260.582    EM
+    10 -0.20916859D+05    3.5702675    0.0001707    858.259  1265.741    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 1
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.46754655D+05    0.0000000    0.0000000   2053.500    70.500    EM
+     2 -0.23029791D+05 ************    0.5074332   2023.902   100.098    EM
+     3 -0.22677330D+05  352.4612394    0.0153046   2003.330   120.670    EM
+     4 -0.22510548D+05  166.7817525    0.0073546   1988.593   135.407    EM
+     5 -0.22413061D+05   97.4870783    0.0043307   1976.581   147.419    EM
+     6 -0.22360208D+05   52.8523068    0.0023581   1966.302   157.698    EM
+     7 -0.22334293D+05   25.9154827    0.0011590   1957.402   166.598    EM
+     8 -0.22321876D+05   12.4166304    0.0005559   1949.597   174.403    EM
+     9 -0.22315396D+05    6.4802959    0.0002903   1942.682   181.318    EM
+    10 -0.22311339D+05    4.0565391    0.0001818   1936.497   187.503    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 2
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.11949421D+06    0.0000000    0.0000000   1850.520   273.480    EM
+     2 -0.23661538D+05 ************    0.8019859   1858.901   265.099    EM
+     3 -0.23576651D+05   84.8868035    0.0035875   1859.011   264.989    EM
+     4 -0.23563418D+05   13.2337668    0.0005613   1859.232   264.768    EM
+     5 -0.23556991D+05    6.4265139    0.0002727   1860.025   263.975    EM
+     6 -0.23552112D+05    4.8789521    0.0002071   1860.924   263.076    EM
+     7 -0.23547381D+05    4.7311064    0.0002009   1861.958   262.042    EM
+     8 -0.23540679D+05    6.7018722    0.0002846   1863.167   260.833    EM
+     9 -0.23528450D+05   12.2291104    0.0005195   1865.468   258.532    EM
+    10 -0.23512603D+05   15.8470887    0.0006735   1871.895   252.105    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 3
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.63651220D+05    0.0000000    0.0000000   2103.543    20.457    EM
+     2 -0.22696705D+05 ************    0.6434207   2103.328    20.672    EM
+     3 -0.22488385D+05  208.3201612    0.0091784   2100.653    23.347    EM
+     4 -0.22415387D+05   72.9982832    0.0032460   2096.436    27.564    EM
+     5 -0.22383337D+05   32.0501240    0.0014298   2091.042    32.958    EM
+     6 -0.22368316D+05   15.0200948    0.0006710   2084.714    39.286    EM
+     7 -0.22360149D+05    8.1673183    0.0003651   2077.644    46.356    EM
+     8 -0.22354475D+05    5.6737533    0.0002537   2070.075    53.925    EM
+     9 -0.22349671D+05    4.8039963    0.0002149   2062.325    61.675    EM
+    10 -0.22345274D+05    4.3972030    0.0001967   2054.665    69.335    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 4
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.52147520D+05    0.0000000    0.0000000   1944.101   179.899    EM
+     2 -0.23043048D+05 ************    0.5581180   1900.797   223.203    EM
+     3 -0.22685564D+05  357.4840894    0.0155138   1873.068   250.932    EM
+     4 -0.22507095D+05  178.4688321    0.0078671   1853.128   270.872    EM
+     5 -0.22399633D+05  107.4625726    0.0047746   1837.247   286.753    EM
+     6 -0.22339715D+05   59.9176590    0.0026749   1823.842   300.158    EM
+     7 -0.22309580D+05   30.1343618    0.0013489   1812.093   311.907    EM
+     8 -0.22294990D+05   14.5906451    0.0006540   1801.463   322.537    EM
+     9 -0.22287241D+05    7.7487437    0.0003476   1791.520   332.480    EM
+    10 -0.22282210D+05    5.0315188    0.0002258   1781.967   342.033    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 5
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.79437672D+05    0.0000000    0.0000000   1904.136   219.864    EM
+     2 -0.21751509D+05 ************    0.7261814   1878.139   245.861    EM
+     3 -0.21424439D+05  327.0697277    0.0150366   1857.232   266.768    EM
+     4 -0.21266788D+05  157.6510584    0.0073585   1841.020   282.980    EM
+     5 -0.21178036D+05   88.7520570    0.0041733   1827.036   296.964    EM
+     6 -0.21131415D+05   46.6213098    0.0022014   1814.078   309.922    EM
+     7 -0.21108543D+05   22.8711034    0.0010823   1801.375   322.625    EM
+     8 -0.21096903D+05   11.6405609    0.0005515   1788.378   335.622    EM
+     9 -0.21089777D+05    7.1263465    0.0003378   1774.749   349.251    EM
+    10 -0.21084241D+05    5.5357317    0.0002625   1760.323   363.677    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 6
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.12894561D+06    0.0000000    0.0000000   1734.444   389.556    EM
+     2 -0.21259460D+05 ************    0.8351285   1735.568   388.432    EM
+     3 -0.21145951D+05  113.5084474    0.0053392   1729.648   394.352    EM
+     4 -0.21108369D+05   37.5820613    0.0017773   1721.335   402.665    EM
+     5 -0.21092388D+05   15.9807218    0.0007571   1711.689   412.311    EM
+     6 -0.21083944D+05    8.4447469    0.0004004   1701.080   422.920    EM
+     7 -0.21078101D+05    5.8424623    0.0002771   1689.590   434.410    EM
+     8 -0.21073077D+05    5.0241761    0.0002384   1677.207   446.793    EM
+     9 -0.21068249D+05    4.8278935    0.0002291   1663.919   460.081    EM
+    10 -0.21063391D+05    4.8576520    0.0002306   1649.713   474.287    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 7
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.82165167D+05    0.0000000    0.0000000   1896.847   227.153    EM
+     2 -0.21533197D+05 ************    0.7379279   1886.601   237.399    EM
+     3 -0.21281139D+05  252.0577834    0.0117055   1867.646   256.354    EM
+     4 -0.21181176D+05   99.9626669    0.0046972   1846.045   277.955    EM
+     5 -0.21131256D+05   49.9202560    0.0023568   1822.578   301.422    EM
+     6 -0.21105160D+05   26.0961321    0.0012350   1798.121   325.879    EM
+     7 -0.21090050D+05   15.1101044    0.0007159   1773.290   350.710    EM
+     8 -0.21079670D+05   10.3796269    0.0004922   1748.426   375.574    EM
+     9 -0.21071306D+05    8.3645953    0.0003968   1723.646   400.354    EM
+    10 -0.21063851D+05    7.4549827    0.0003538   1698.943   425.057    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 8
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.65046670D+05    0.0000000    0.0000000   1853.262   270.738    EM
+     2 -0.21196382D+05 ************    0.6741358   1839.828   284.172    EM
+     3 -0.21124129D+05   72.2533350    0.0034088   1816.888   307.112    EM
+     4 -0.21100426D+05   23.7026954    0.0011221   1796.418   327.582    EM
+     5 -0.21089385D+05   11.0406799    0.0005232   1776.999   347.001    EM
+     6 -0.21082159D+05    7.2267098    0.0003427   1757.781   366.219    EM
+     7 -0.21076065D+05    6.0938594    0.0002891   1738.242   385.758    EM
+     8 -0.21070233D+05    5.8313667    0.0002767   1718.093   405.907    EM
+     9 -0.21064373D+05    5.8604315    0.0002781   1697.223   426.777    EM
+    10 -0.21058402D+05    5.9707002    0.0002835   1675.675   448.325    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 9
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.64143918D+05    0.0000000    0.0000000   2027.997    96.003    EM
+     2 -0.21337743D+05 ************    0.6673458   2015.253   108.747    EM
+     3 -0.21221888D+05  115.8552945    0.0054296   1998.762   125.238    EM
+     4 -0.21183356D+05   38.5318517    0.0018157   1980.776   143.224    EM
+     5 -0.21164691D+05   18.6655798    0.0008811   1961.817   162.183    EM
+     6 -0.21152182D+05   12.5084558    0.0005910   1942.187   181.813    EM
+     7 -0.21141420D+05   10.7627733    0.0005088   1922.172   201.828    EM
+     8 -0.21131513D+05    9.9069388    0.0004686   1902.802   221.198    EM
+     9 -0.21122880D+05    8.6325244    0.0004085   1884.869   239.131    EM
+    10 -0.21115525D+05    7.3548907    0.0003482   1868.045   255.955    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 10
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.20082665D+06    0.0000000    0.0000000   1633.794   490.206    EM
+     2 -0.21107202D+05 ************    0.8948984   1629.086   494.914    EM
+     3 -0.21082314D+05   24.8882746    0.0011791   1623.074   500.926    EM
+     4 -0.21074948D+05    7.3657985    0.0003494   1616.993   507.007    EM
+     5 -0.21071510D+05    3.4385984    0.0001632   1610.694   513.306    EM
+     6 -0.21068961D+05    2.5484500    0.0001209   1604.077   519.923    EM
+     7 -0.21066479D+05    2.4819179    0.0001178   1597.071   526.929    EM
+     8 -0.21063799D+05    2.6802256    0.0001272   1589.648   534.352    EM
+     9 -0.21060808D+05    2.9907713    0.0001420   1581.798   542.202    EM
+    10 -0.21057428D+05    3.3806804    0.0001605   1573.493   550.507    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 11
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.18578833D+06    0.0000000    0.0000000    974.791  1149.209    EM
+     2 -0.21219922D+05 ************    0.8857844    973.018  1150.982    EM
+     3 -0.21071767D+05  148.1546938    0.0069819    970.503  1153.497    EM
+     4 -0.21027892D+05   43.8753766    0.0020822    968.036  1155.964    EM
+     5 -0.21012092D+05   15.7997933    0.0007514    965.626  1158.374    EM
+     6 -0.21006003D+05    6.0894201    0.0002898    963.264  1160.736    EM
+     7 -0.21003248D+05    2.7551085    0.0001312    960.964  1163.036    EM
+     8 -0.21001563D+05    1.6848076    0.0000802    958.744  1165.256    EM
+     9 -0.21000185D+05    1.3780137    0.0000656    956.621  1167.379    EM
+    10 -0.20998870D+05    1.3149950    0.0000626    954.609  1169.391    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 12
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.66282379D+05    0.0000000    0.0000000   1830.501   293.499    EM
+     2 -0.21156504D+05 ************    0.6808125   1830.013   293.987    EM
+     3 -0.21122752D+05   33.7525221    0.0015954   1822.685   301.315    EM
+     4 -0.21111492D+05   11.2596928    0.0005331   1813.064   310.936    EM
+     5 -0.21105159D+05    6.3329170    0.0003000   1802.207   321.793    EM
+     6 -0.21100049D+05    5.1107080    0.0002422   1790.964   333.036    EM
+     7 -0.21095450D+05    4.5988948    0.0002180   1779.690   344.310    EM
+     8 -0.21091113D+05    4.3363748    0.0002056   1768.208   355.792    EM
+     9 -0.21086818D+05    4.2957987    0.0002037   1756.106   367.894    EM
+    10 -0.21082403D+05    4.4146899    0.0002094   1743.052   380.948    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 13
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.77740126D+05    0.0000000    0.0000000   1978.824   145.176    EM
+     2 -0.21297443D+05 ************    0.7260431   1960.830   163.170    EM
+     3 -0.21195051D+05  102.3920945    0.0048077   1939.092   184.908    EM
+     4 -0.21158924D+05   36.1270193    0.0017045   1917.456   206.544    EM
+     5 -0.21140483D+05   18.4405374    0.0008715   1896.356   227.644    EM
+     6 -0.21128106D+05   12.3770609    0.0005855   1876.221   247.779    EM
+     7 -0.21118476D+05    9.6301289    0.0004558   1857.351   266.649    EM
+     8 -0.21110470D+05    8.0063496    0.0003791   1839.552   284.448    EM
+     9 -0.21103448D+05    7.0216583    0.0003326   1822.317   301.683    EM
+    10 -0.21096978D+05    6.4695642    0.0003066   1805.117   318.883    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 14
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.84520739D+05    0.0000000    0.0000000   2018.820   105.180    EM
+     2 -0.24043028D+05 ************    0.7155369   2017.693   106.307    EM
+     3 -0.23756328D+05  286.7003723    0.0119245   2017.022   106.978    EM
+     4 -0.23643777D+05  112.5511650    0.0047377   2016.528   107.472    EM
+     5 -0.23587662D+05   56.1152985    0.0023734   2016.149   107.851    EM
+     6 -0.23563251D+05   24.4102331    0.0010349   2015.846   108.154    EM
+     7 -0.23552134D+05   11.1177980    0.0004718   2015.621   108.379    EM
+     8 -0.23547339D+05    4.7947828    0.0002036   2015.379   108.621    EM
+     9 -0.23544996D+05    2.3430346    0.0000995   2015.181   108.819    EM
+    10 -0.23543582D+05    1.4133389    0.0000600   2015.006   108.994    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 15
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.10266293D+06    0.0000000    0.0000000   1809.915   314.085    EM
+     2 -0.21164532D+05 ************    0.7938445   1807.466   316.534    EM
+     3 -0.21115852D+05   48.6796755    0.0023001   1798.106   325.894    EM
+     4 -0.21100682D+05   15.1703407    0.0007184   1785.934   338.066    EM
+     5 -0.21092211D+05    8.4710509    0.0004015   1771.741   352.259    EM
+     6 -0.21085343D+05    6.8684694    0.0003256   1755.914   368.086    EM
+     7 -0.21078877D+05    6.4652928    0.0003066   1738.526   385.474    EM
+     8 -0.21072473D+05    6.4046894    0.0003038   1719.596   404.404    EM
+     9 -0.21065973D+05    6.4998473    0.0003085   1699.179   424.821    EM
+    10 -0.21059303D+05    6.6700673    0.0003166   1677.416   446.584    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 16
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.95868758D+05    0.0000000    0.0000000   1681.684   442.316    EM
+     2 -0.21346161D+05 ************    0.7773398   1674.367   449.633    EM
+     3 -0.21165970D+05  180.1918230    0.0084414   1662.306   461.694    EM
+     4 -0.21103422D+05   62.5473637    0.0029551   1648.100   475.900    EM
+     5 -0.21076191D+05   27.2316594    0.0012904   1632.675   491.325    EM
+     6 -0.21062810D+05   13.3803276    0.0006349   1616.384   507.616    EM
+     7 -0.21054708D+05    8.1018307    0.0003847   1599.342   524.658    EM
+     8 -0.21048416D+05    6.2927708    0.0002989   1581.618   542.382    EM
+     9 -0.21042642D+05    5.7739983    0.0002743   1563.338   560.662    EM
+    10 -0.21036982D+05    5.6597633    0.0002690   1544.697   579.303    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 17
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.10585454D+06    0.0000000    0.0000000   1962.058   161.942    EM
+     2 -0.22811185D+05 ************    0.7845044   1973.023   150.977    EM
+     3 -0.22544367D+05  266.8177197    0.0116968   1969.872   154.128    EM
+     4 -0.22424628D+05  119.7397234    0.0053113   1963.869   160.131    EM
+     5 -0.22361341D+05   63.2869818    0.0028222   1956.690   167.310    EM
+     6 -0.22329834D+05   31.5067228    0.0014090   1949.503   174.497    EM
+     7 -0.22315003D+05   14.8315265    0.0006642   1942.830   181.170    EM
+     8 -0.22307909D+05    7.0932785    0.0003179   1937.031   186.969    EM
+     9 -0.22304227D+05    3.6825367    0.0001651   1932.121   191.879    EM
+    10 -0.22302054D+05    2.1729963    0.0000974   1928.044   195.956    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 18
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.73163447D+05    0.0000000    0.0000000   1851.626   272.374    EM
+     2 -0.24497853D+05 ************    0.6651627   1867.530   256.470    EM
+     3 -0.24280676D+05  217.1777365    0.0088652   1874.435   249.565    EM
+     4 -0.24207316D+05   73.3594738    0.0030213   1878.249   245.751    EM
+     5 -0.24173558D+05   33.7578368    0.0013945   1880.298   243.702    EM
+     6 -0.24160465D+05   13.0929713    0.0005416   1881.377   242.623    EM
+     7 -0.24155015D+05    5.4503105    0.0002256   1881.905   242.095    EM
+     8 -0.24151986D+05    3.0294229    0.0001254   1882.124   241.876    EM
+     9 -0.24150755D+05    1.2304271    0.0000509   1882.175   241.825    EM
+    10 -0.24149917D+05    0.8383818    0.0000347   1882.144   241.856    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 19
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.93431080D+05    0.0000000    0.0000000   2017.529   106.471    EM
+     2 -0.24352675D+05 ************    0.7393515   2015.694   108.306    EM
+     3 -0.24028848D+05  323.8273746    0.0132974   2014.265   109.735    EM
+     4 -0.23878612D+05  150.2364734    0.0062523   2013.489   110.511    EM
+     5 -0.23794374D+05   84.2377668    0.0035277   2013.085   110.915    EM
+     6 -0.23749894D+05   44.4802012    0.0018694   2012.884   111.116    EM
+     7 -0.23729922D+05   19.9718819    0.0008409   2012.789   111.211    EM
+     8 -0.23721673D+05    8.2485253    0.0003476   2012.756   111.244    EM
+     9 -0.23718390D+05    3.2828187    0.0001384   2012.753   111.247    EM
+    10 -0.23717002D+05    1.3888115    0.0000586   2012.762   111.238    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 20
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.13595378D+06    0.0000000    0.0000000   1687.957   436.043    EM
+     2 -0.22678272D+05 ************    0.8331913   1684.529   439.471    EM
+     3 -0.22432314D+05  245.9579619    0.0108455   1679.092   444.908    EM
+     4 -0.22334291D+05   98.0228546    0.0043697   1671.731   452.269    EM
+     5 -0.22286694D+05   47.5976502    0.0021311   1662.413   461.587    EM
+     6 -0.22263304D+05   23.3900080    0.0010495   1651.174   472.826    EM
+     7 -0.22250917D+05   12.3867596    0.0005564   1638.562   485.438    EM
+     8 -0.22243110D+05    7.8068553    0.0003509   1625.344   498.656    EM
+     9 -0.22237237D+05    5.8725180    0.0002640   1612.140   511.860    EM
+    10 -0.22232281D+05    4.9561683    0.0002229   1599.239   524.761    EM
+
+
+  FINAL STAGE ITERATIONS
+
+
+  TECHNICAL 8 OUTPUT FOR UNPERTURBED STARTING VALUE SET
+
+
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.26495042D+05    0.0000000    0.0000000   1062.000  1062.000    EM
+     2 -0.21061833D+05 5433.2088116    0.2050651   1005.846  1118.154    EM
+     3 -0.20986694D+05   75.1391221    0.0035675    958.930  1165.070    EM
+     4 -0.20960618D+05   26.0766673    0.0012425    926.168  1197.832    EM
+     5 -0.20947236D+05   13.3820395    0.0006384    903.883  1220.117    EM
+     6 -0.20937980D+05    9.2558249    0.0004419    888.530  1235.470    EM
+     7 -0.20930760D+05    7.2193124    0.0003448    877.664  1246.336    EM
+     8 -0.20924996D+05    5.7648500    0.0002754    869.650  1254.350    EM
+     9 -0.20920430D+05    4.5659512    0.0002182    863.418  1260.582    EM
+    10 -0.20916859D+05    3.5702675    0.0001707    858.259  1265.741    EM
+    11 -0.20914091D+05    2.7680629    0.0001323    853.721  1270.279    EM
+    12 -0.20911950D+05    2.1408862    0.0001024    849.525  1274.475    EM
+    13 -0.20910290D+05    1.6599978    0.0000794    845.517  1278.483    EM
+    14 -0.20908996D+05    1.2945522    0.0000619    841.617  1282.383    EM
+    15 -0.20907979D+05    1.0171715    0.0000486    837.793  1286.207    EM
+    16 -0.20907173D+05    0.8059046    0.0000385    834.037  1289.963    EM
+    17 -0.20906529D+05    0.6440634    0.0000308    830.351  1293.649    EM
+    18 -0.20906010D+05    0.5192189    0.0000248    826.745  1297.255    EM
+    19 -0.20905587D+05    0.4221899    0.0000202    823.231  1300.769    EM
+    20 -0.20905241D+05    0.3461968    0.0000166    819.814  1304.186    EM
+    21 -0.20904955D+05    0.2861751    0.0000137    816.504  1307.496    EM
+    22 -0.20904717D+05    0.2383936    0.0000114    813.305  1310.695    EM
+    23 -0.20904517D+05    0.2000326    0.0000096    810.218  1313.782    EM
+    24 -0.20904348D+05    0.1690585    0.0000081    807.236  1316.764    EM
+    25 -0.20904204D+05    0.1436196    0.0000069    804.378  1319.622    EM
+    26 -0.20904081D+05    0.1227493    0.0000059    801.633  1322.367    EM
+    27 -0.20903976D+05    0.1054608    0.0000050    798.997  1325.003    EM
+    28 -0.20903885D+05    0.0910106    0.0000044    796.469  1327.531    EM
+    29 -0.20903806D+05    0.0788780    0.0000038    794.044  1329.956    EM
+    30 -0.20903737D+05    0.0686105    0.0000033    791.720  1332.280    EM
+    31 -0.20903677D+05    0.0598792    0.0000029    789.492  1334.508    EM
+    32 -0.20903625D+05    0.0524169    0.0000025    787.358  1336.642    EM
+    33 -0.20903579D+05    0.0460106    0.0000022    785.314  1338.686    EM
+    34 -0.20903538D+05    0.0404883    0.0000019    783.355  1340.645    EM
+    35 -0.20903503D+05    0.0357085    0.0000017    781.479  1342.521    EM
+    36 -0.20903471D+05    0.0315644    0.0000015    779.681  1344.319    EM
+    37 -0.20903443D+05    0.0279494    0.0000013    777.958  1346.042    EM
+    38 -0.20903418D+05    0.0248011    0.0000012    776.307  1347.693    EM
+    39 -0.20903396D+05    0.0220475    0.0000011    774.723  1349.277    EM
+    40 -0.20903377D+05    0.0196298    0.0000009    773.205  1350.795    EM
+    41 -0.20903359D+05    0.0175193    0.0000008    771.746  1352.254    EM
+    42 -0.20903344D+05    0.0156399    0.0000007    770.348  1353.652    EM
+    43 -0.20903330D+05    0.0139914    0.0000007    769.006  1354.994    EM
+    44 -0.20903317D+05    0.0125234    0.0000006    767.720  1356.280    EM
+    45 -0.20903306D+05    0.0112327    0.0000005    766.486  1357.514    EM
+    46 -0.20903296D+05    0.0100875    0.0000005    765.301  1358.699    EM
+    47 -0.20903287D+05    0.0090735    0.0000004    764.163  1359.837    EM
+    48 -0.20903278D+05    0.0081706    0.0000004    763.069  1360.931    EM
+    49 -0.20903271D+05    0.0073669    0.0000004    762.019  1361.981    EM
+    50 -0.20903264D+05    0.0066435    0.0000003    761.011  1362.989    EM
+    51 -0.20903258D+05    0.0060111    0.0000003    760.041  1363.959    EM
+    52 -0.20903253D+05    0.0054395    0.0000003    759.108  1364.892    EM
+    53 -0.20903248D+05    0.0049264    0.0000002    758.211  1365.789    EM
+    54 -0.20903244D+05    0.0044694    0.0000002    757.348  1366.652    EM
+    55 -0.20903240D+05    0.0040581    0.0000002    756.518  1367.482    EM
+    56 -0.20903236D+05    0.0036800    0.0000002    755.722  1368.278    EM
+    57 -0.20903233D+05    0.0033589    0.0000002    754.952  1369.048    EM
+    58 -0.20903229D+05    0.0030572    0.0000001    754.212  1369.788    EM
+    59 -0.20903227D+05    0.0027881    0.0000001    753.500  1370.500    EM
+    60 -0.20903224D+05    0.0025437    0.0000001    752.814  1371.186    EM
+    61 -0.20903222D+05    0.0023250    0.0000001    752.153  1371.847    EM
+    62 -0.20903220D+05    0.0021246    0.0000001    751.518  1372.482    EM
+    63 -0.20903218D+05    0.0019463    0.0000001    750.904  1373.096    EM
+    64 -0.20903216D+05    0.0017833    0.0000001    750.314  1373.686    EM
+    65 -0.20903214D+05    0.0016353    0.0000001    749.745  1374.255    EM
+    66 -0.20903213D+05    0.0015009    0.0000001    749.196  1374.804    EM
+    67 -0.20903211D+05    0.0013791    0.0000001    748.667  1375.333    EM
+    68 -0.20903210D+05    0.0012675    0.0000001    748.157  1375.843    EM
+    69 -0.20903208D+05    0.0019769    0.0000001    746.068  1377.932    QN
+    70 -0.20903206D+05    0.0024605    0.0000001    745.686  1378.314    EM
+    71 -0.20903205D+05    0.0008847    0.0000000    745.300  1378.700    EM
+
+
+  TECHNICAL 8 OUTPUT FOR STARTING VALUE SET 11
+
+
+
+
+  ITER  LOGLIKELIHOOD    ABS CHANGE   REL CHANGE      CLASS COUNTS    ALGORITHM
+     1 -0.18578833D+06    0.0000000    0.0000000    974.791  1149.209    EM
+     2 -0.21219922D+05 ************    0.8857844    973.018  1150.982    EM
+     3 -0.21071767D+05  148.1546938    0.0069819    970.503  1153.497    EM
+     4 -0.21027892D+05   43.8753766    0.0020822    968.036  1155.964    EM
+     5 -0.21012092D+05   15.7997933    0.0007514    965.626  1158.374    EM
+     6 -0.21006003D+05    6.0894201    0.0002898    963.264  1160.736    EM
+     7 -0.21003248D+05    2.7551085    0.0001312    960.964  1163.036    EM
+     8 -0.21001563D+05    1.6848076    0.0000802    958.744  1165.256    EM
+     9 -0.21000185D+05    1.3780137    0.0000656    956.621  1167.379    EM
+    10 -0.20998870D+05    1.3149950    0.0000626    954.609  1169.391    EM
+    11 -0.20997542D+05    1.3274087    0.0000632    952.711  1171.289    EM
+    12 -0.20996175D+05    1.3668868    0.0000651    950.927  1173.073    EM
+    13 -0.20994750D+05    1.4253255    0.0000679    949.249  1174.751    EM
+    14 -0.20993242D+05    1.5080978    0.0000718    947.666  1176.334    EM
+    15 -0.20991618D+05    1.6241555    0.0000774    946.154  1177.846    EM
+    16 -0.20989837D+05    1.7804308    0.0000848    944.675  1179.325    EM
+    17 -0.20987861D+05    1.9762207    0.0000942    943.156  1180.844    EM
+    18 -0.20985663D+05    2.1985037    0.0001048    941.480  1182.520    EM
+    19 -0.20983240D+05    2.4225341    0.0001154    939.481  1184.519    EM
+    20 -0.20980616D+05    2.6244944    0.0001251    936.964  1187.036    EM
+    21 -0.20977818D+05    2.7979117    0.0001334    933.739  1190.261    EM
+    22 -0.20974859D+05    2.9583099    0.0001410    929.648  1194.352    EM
+    23 -0.20971728D+05    3.1312578    0.0001493    924.590  1199.410    EM
+    24 -0.20968391D+05    3.3372143    0.0001591    918.519  1205.481    EM
+    25 -0.20964806D+05    3.5846488    0.0001710    911.441  1212.559    EM
+    26 -0.20960935D+05    3.8713405    0.0001847    903.402  1220.598    EM
+    27 -0.20956746D+05    4.1894286    0.0001999    894.483  1229.517    EM
+    28 -0.20952214D+05    4.5316733    0.0002162    884.790  1239.210    EM
+    29 -0.20947319D+05    4.8952444    0.0002336    874.439  1249.561    EM
+    30 -0.20942042D+05    5.2761531    0.0002519    863.573  1260.427    EM
+    31 -0.20936389D+05    5.6535897    0.0002700    852.363  1271.637    EM
+    32 -0.20930414D+05    5.9744783    0.0002854    841.016  1282.984    EM
+    33 -0.20924265D+05    6.1489300    0.0002938    829.727  1294.273    EM
+    34 -0.20918198D+05    6.0679875    0.0002900    818.653  1305.347    EM
+    35 -0.20912523D+05    5.6746078    0.0002713    807.907  1316.093    EM
+    36 -0.20907477D+05    5.0459686    0.0002413    797.572  1326.428    EM
+    37 -0.20903113D+05    4.3642558    0.0002087    787.677  1336.323    EM
+    38 -0.20899324D+05    3.7885957    0.0001812    778.185  1345.815    EM
+    39 -0.20881421D+05   17.9032429    0.0008566    543.092  1580.908    FS
+    40 -0.20865187D+05   16.2334131    0.0007774    539.364  1584.636    EM
+    41 -0.20858394D+05    6.7932427    0.0003256    534.760  1589.240    EM
+    42 -0.20853148D+05    5.2462599    0.0002515    529.347  1594.653    EM
+    43 -0.20848546D+05    4.6018110    0.0002207    523.168  1600.832    EM
+    44 -0.20844368D+05    4.1782254    0.0002004    516.278  1607.722    EM
+    45 -0.20840606D+05    3.7623376    0.0001805    508.779  1615.221    EM
+    46 -0.20837313D+05    3.2926413    0.0001580    500.839  1623.161    EM
+    47 -0.20834551D+05    2.7621096    0.0001326    492.674  1631.326    EM
+    48 -0.20832351D+05    2.1995330    0.0001056    484.515  1639.485    EM
+    49 -0.20830690D+05    1.6609348    0.0000797    476.561  1647.439    EM
+    50 -0.20829487D+05    1.2028425    0.0000577    468.970  1655.030    EM
+    51 -0.20828633D+05    0.8547116    0.0000410    461.832  1662.168    EM
+    52 -0.20828021D+05    0.6116766    0.0000294    455.190  1668.810    EM
+    53 -0.20827571D+05    0.4498613    0.0000216    449.049  1674.951    EM
+    54 -0.20827229D+05    0.3419334    0.0000164    443.410  1680.590    EM
+    55 -0.20826961D+05    0.2681158    0.0000129    438.246  1685.754    EM
+    56 -0.20826746D+05    0.2150827    0.0000103    433.527  1690.473    EM
+    57 -0.20826571D+05    0.1750763    0.0000084    429.222  1694.778    EM
+    58 -0.20826427D+05    0.1437533    0.0000069    425.299  1698.701    EM
+    59 -0.20826309D+05    0.1185705    0.0000057    421.726  1702.274    EM
+    60 -0.20826211D+05    0.0979406    0.0000047    418.479  1705.521    EM
+    61 -0.20826130D+05    0.0811432    0.0000039    415.522  1708.478    EM
+    62 -0.20826062D+05    0.0671718    0.0000032    412.834  1711.166    EM
+    63 -0.20826007D+05    0.0556132    0.0000027    410.391  1713.609    EM
+    64 -0.20825961D+05    0.0460284    0.0000022    408.170  1715.830    EM
+    65 -0.20825923D+05    0.0381112    0.0000018    406.151  1717.849    EM
+    66 -0.20825891D+05    0.0315147    0.0000015    404.318  1719.682    EM
+    67 -0.20825865D+05    0.0260496    0.0000013    402.652  1721.348    EM
+    68 -0.20825844D+05    0.0215374    0.0000010    401.139  1722.861    EM
+    69 -0.20825826D+05    0.0177983    0.0000009    399.764  1724.236    EM
+    70 -0.20825811D+05    0.0146900    0.0000007    398.516  1725.484    EM
+    71 -0.20825806D+05    0.0053063    0.0000003    397.577  1726.423    QN
+    72 -0.20825791D+05    0.0149158    0.0000007    396.526  1727.474    EM
+    73 -0.20825782D+05    0.0087429    0.0000004    395.573  1728.427    EM
+    74 -0.20825775D+05    0.0071090    0.0000003    394.710  1729.290    EM
+    75 -0.20825769D+05    0.0058338    0.0000003    393.925  1730.075    EM
+    76 -0.20825764D+05    0.0047959    0.0000002    393.213  1730.787    EM
+    77 -0.20825760D+05    0.0039470    0.0000002    392.567  1731.433    EM
+    78 -0.20825757D+05    0.0032476    0.0000002    391.980  1732.020    EM
+    79 -0.20825755D+05    0.0026736    0.0000001    391.447  1732.553    EM
+    80 -0.20825752D+05    0.0021996    0.0000001    390.962  1733.038    EM
+    81 -0.20825751D+05    0.0018091    0.0000001    390.523  1733.477    EM
+    82 -0.20825749D+05    0.0014874    0.0000001    390.124  1733.876    EM
+    83 -0.20825748D+05    0.0012222    0.0000001    389.761  1734.239    EM
+    84 -0.20825747D+05    0.0010040    0.0000000    389.432  1734.568    EM
+    85 -0.20825746D+05    0.0008246    0.0000000    389.133  1734.867    EM
+
+
+     Beginning Time:  14:11:28
+        Ending Time:  14:56:11
+       Elapsed Time:  00:44:43
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2015 Muthen & Muthen

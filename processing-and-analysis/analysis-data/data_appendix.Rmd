@@ -1,6 +1,360 @@
 ---
-title: "Data Appendix"
-author: "name of author"
-date: "date created or edited"
-output: html_document
+title: "Data Appendix for Putin’s Performance Dilemma..."
+author: "Alexander Bor & Levente Littvay"
+date: "2016.08.17."
+output: pdf_document
 ---
+
+```{r, include = F}
+
+library(ggplot2)
+library(stargazer)
+library(pander)
+std <- function(x) sd(x)/sqrt(length(x))
+
+set.seed(13012)
+
+####   Set working directory
+
+####   The working directory should be set to the "Command files" directory in 
+####   which this script is stored.
+####   In the command below, replace "<PATH TO `Command files' DIRECTORY>" with the 
+####   directory path (for the computer you are working on) to the "Command files" dir.
+
+# setwd("<PATH TO `Command files' DIRECTORY>")
+setwd("/Users/szasulja/Dropbox/thesis/Russia paper ProjectTIER/processing-and-analysis/command-files")
+
+###  load dataset
+
+load("../analysis-data/ESS5RU_final.Rdata")
+
+```
+
+All variables in the analysis come from the ESS data. The data consist of `r nrow(data_out)` observations. Definitions, summary statistics, and distributions of all variables are shown below.
+
+\bigbreak
+\bigbreak
+
+__Variable:__ TRSTPRL
+
+__Definition:__ Trust in Parliament 
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTPRL))
+
+hist(data_out$TRSTPRL, 
+     xlab = c("Trust in Parliament"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ TRSTLGL
+
+__Definition:__ Trust in Legal system
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTLGL))
+
+hist(data_out$TRSTLGL, 
+     xlab = c("Trust in Legal System"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ TRSTPLC
+
+__Definition:__ Trust in police
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTPLC))
+
+hist(data_out$TRSTPLC, 
+     xlab = c("Trust in police"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ TRSTPLT
+
+__Definition:__ Trust in politicians
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTPLT))
+
+hist(data_out$TRSTPLT, 
+     xlab = c("Trust in politicians"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ TRSTPRT
+
+__Definition:__ Trust in political parties
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTPRT))
+
+hist(data_out$TRSTPRL, 
+     xlab = c("Trust in parties"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ TR
+
+__Definition:__ Trust index of the five institutional trust evaluations as exported from the model
+
+```{r, echo=F}
+
+pander(summary(data_out$TR))
+
+hist(data_out$TR, 
+     xlab = c("Trust-index"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+
+
+__Variable:__ TRSTPPL
+
+__Definition:__ Trust in people in general
+
+```{r, echo=F}
+
+pander(summary(data_out$TRSTPPL))
+
+hist(data_out$TRSTPPL, 
+     xlab = c("Trust in people"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ PARTYUR
+
+__Definition:__ Feels close to the United Russia party
+
+```{r, echo=F}
+
+pander(summary(data_out$PARTYUR))
+
+barplot(table(data_out$PARTYUR), 
+     xlab = c("Feeling close to UR"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ STFECON
+
+__Definition:__ Level of satisfaction with "the current state of economy" 
+
+```{r, echo=F}
+
+pander(summary(data_out$STFECON))
+
+hist(data_out$STFECON, 
+     xlab = c("Satistaction with the economy"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ AGEA
+
+__Definition:__ Age of the respondent 
+
+```{r, echo=F}
+
+pander(summary(data_out$AGEA))
+
+hist(data_out$AGEA, 
+     xlab = c("Age"), 
+     main = NULL)
+
+```
+
+\newpage
+
+__Variable:__ AGEGEN
+
+__Definition:__ Age categorized by generations (marked by leader's name in childhood)
+
+```{r, echo=F}
+
+pander(summary(data_out$AGEGEN))
+
+barplot(prop.table(table(data_out$AGEGEN)), 
+     xlab = c("Age by generations"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+
+\newpage 
+
+__Variable:__ EDUCAT
+
+__Definition:__ Highest level of education achieved.
+
+```{r, echo=F}
+
+pander(summary(data_out$EDUCAT))
+
+barplot(prop.table(table(data_out$EDUCAT)), 
+     xlab = c("Highest education completed by respondent"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ POPSIZE
+
+__Definition:__ Population size of place of residence
+
+```{r, echo=F}
+
+pander(summary(data_out$POPSIZE))
+
+barplot(prop.table(table(data_out$POPSIZE)), 
+     xlab = c("Population size of place of residence"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ PROTEST
+
+__Definition:__ A dummy capturing if respondent belongs to the category most likely to show up at protests in _all three_ of the demographic variables (Putin's generation, Has higher education, lives in a big city)
+
+```{r, echo=F}
+
+pander(summary(data_out$PROTEST))
+
+barplot(prop.table(table(data_out$PROTEST)), 
+     xlab = c("Most likely to protest"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ Male
+
+__Definition:__ Sex of respondent coded as a male-dummy
+
+```{r, echo=F}
+
+pander(summary(data_out$MALE))
+
+barplot(prop.table(table(data_out$MALE)), 
+     xlab = c("Proportion of males"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ WORKORG
+
+__Definition:__ Whether the respondent worked in an organisation or association during the past 12 months
+
+```{r, echo=F}
+
+pander(summary(data_out$WORKORG))
+
+barplot(prop.table(table(data_out$WORKORG)), 
+     xlab = c("Did any social work?"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ POLINTR
+
+__Definition:__ Interest in politics. Coded as dummy: Very or quite interested
+
+```{r, echo=F}
+
+pander(summary(data_out$POLINTR))
+
+barplot(prop.table(table(data_out$POLINTR)), 
+     xlab = c("Interest in politics"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ INTERNET
+
+__Definition:__ How often do you use the internet? Coded as dummy: Several times a week or daily.
+
+```{r, echo=F}
+
+pander(summary(data_out$INTERNET))
+
+barplot(prop.table(table(data_out$INTERNET)), 
+     xlab = c("Uses internet at least several times a week"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+__Variable:__ VOTED
+
+__Definition:__ Voted in last elections
+
+```{r, echo=F}
+
+pander(summary(data_out$VOTED))
+
+barplot(prop.table(table(data_out$VOTED)), 
+     xlab = c("Voted in the last elections"), 
+     main = NULL)
+
+```
+
+\newpage 
+
+
+__Variable:__ C
+
+__Definition:__ Which latent class the respondent belongs to? 
+
+```{r, echo=F}
+
+pander(summary(data_out$C))
+
+barplot(prop.table(table(data_out$C)), 
+     xlab = c("Latent class membership"), 
+     main = NULL)
+
+```

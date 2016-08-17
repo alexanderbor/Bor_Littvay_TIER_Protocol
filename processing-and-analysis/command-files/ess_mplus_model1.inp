@@ -1,0 +1,42 @@
+DATA: FILE IS essmplus.dat;
+
+DEFINE:
+If (agea GE 72) THEN stalin = 1 else stalin = 0; 
+If (agea GE 61 AND agea LT 72) THEN krus   = 1 else krus   = 0;
+If (agea GE 41 AND agea LT 61) THEN brez   = 1 else brez   = 0;
+If (agea GE 34 AND agea LT 41) THEN gorb   = 1 else gorb   = 0;
+If (agea GE 25 AND agea LT 34) THEN jeltz  = 1 else jeltz  = 0;
+if (agea LT 25) THEN put  = 1 else put  = 0;
+
+if (partyru EQ 1) THEN partyur = 1 else partyur = 0;
+
+if (towntype EQ 3) THEN town = 1 else town = 0;
+if (towntype GT 3) THEN vilg = 1 else vilg = 0;
+
+
+VARIABLE: NAMES ARE id agea trstprl trstlgl trstplc trstplt trstprt trstppl
+contact polintr voted workpty demo closeprt mmbprt leftrig stflife stfecon
+stfgov stfdem wrngins wrngbuy wrngtrf male edu prvsctr incdeci internet
+workorg partyru towntype;
+
+USEVARIABLES ARE !stfdem 
+
+stfecon 
+
+trstprl trstlgl trstplc trstplt trstprt  
+;
+
+MISSING ARE ALL (-99);
+
+IDVAR = id;
+
+ANALYSIS: ESTIMATOR=MLR;
+
+MODEL:
+
+tr by trstprl trstlgl trstplc trstplt trstprt;
+
+tr on stfecon;
+
+OUTPUT: STDYX TECH1 TECH8;
+
