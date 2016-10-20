@@ -5,7 +5,7 @@ date: 2016.08.17.
 ---
 
 
-The data management and analysisforthis paper were conducted with R version 3.3.0 (2016-05-03) -- "Supposedly Educational" and with Mplus VERSION 7.4. 
+The data management and analysis for this paper were conducted with R version 3.3.0 (2016-05-03 -- "Supposedly Educational") and with Mplus version 7.4. 
 
 __Required packages:__
 
@@ -46,8 +46,8 @@ The documentation provided hereis stored in folders that are organized as illust
         * ess_mplus_model3.out
         * ess5ru_analysis.R
         * ess5ru_importing.R
-        * ess5ru_processing.R
-        * README.md
+        * ess5ru_processing.R  
+        * README.md  
     + Analysis Data - `analysis-data`
         * data_appendix.pdf
         * data_appendix.Rmd

@@ -86,15 +86,7 @@ data$vilg<-recode(data$domicat, "3=1; 1:2=0")
 data<-remove.vars(data, c("gndr", "eisced", "netuse", "wrkorg", "domicil", "vote", "prtvtbru",
 	"prtclbru"),info=FALSE )
 
-
-###  Save the processed ESS Russia data
-###  in a file called "ESS5RU_clean.Rdata"
-###  stored in the "analysis-data" folder
-AnalysisData <- "../analysis-data"
-save(data, file = paste(AnalysisData, "/ESS5RU_clean.Rdata", sep = ""))
-
-
-
+# remove variables which were recoded: agecat, educat, domicat
 data_mplus<-remove.vars(data, c("agecat", "educat", "domicat"), info=FALSE)
 
 # export a data set for the analysis in MPLUS 
